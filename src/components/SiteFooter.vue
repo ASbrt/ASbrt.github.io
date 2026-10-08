@@ -13,7 +13,7 @@
       </div>
       <div class="footer__bottom mono">
         <span>© {{ new Date().getFullYear() }} Aaron Siebert</span>
-        <span>Built by hand — Vue, Three.js, GLSL</span>
+        <span>Built by hand: Vue, Three.js, GLSL</span>
       </div>
     </div>
   </footer>

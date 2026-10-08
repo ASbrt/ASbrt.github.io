@@ -3,7 +3,7 @@
     <div class="container">
       <div class="visuell__stage" data-parallax="0.12">
         <div class="visuell__panel" aria-hidden="true">
-          <span class="visuell__panel-label mono">VISUELL — SIGNAL 001</span>
+          <span class="visuell__panel-label mono">VISUELL / SIGNAL 001</span>
           <div class="visuell__bars">
             <span v-for="i in 24" :key="i" :style="{ '--d': `${(i * 137.5) % 100}ms` }"></span>
           </div>
@@ -13,8 +13,8 @@
           <h2 class="display-lg rv">Visuell<span class="accent">.</span></h2>
           <p class="rv">
             A video-sampling groovebox for live visuals. Built from the
-            intersection of two habits: making music and training models —
-            because VJing deserves the same workflow language as DJing.
+            intersection of two habits: making music and training models.
+            VJing deserves the same workflow language as DJing.
           </p>
           <ul class="visuell__specs mono">
             <li class="rv"><span>Type</span><span>Startup / Creative Tool</span></li>

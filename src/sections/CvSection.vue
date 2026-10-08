@@ -22,7 +22,7 @@
                 <span class="mono">2021 — 2025</span>
                 <div>
                   <strong>B.A. Social Economics, focus: Economics</strong>
-                  <span>University of Hamburg — final grade 1.7</span>
+                  <span>University of Hamburg, final grade 1.7</span>
                 </div>
               </li>
             </ul>
@@ -46,9 +46,13 @@
               <li>
                 <span class="mono">2026 —</span>
                 <div>
-                  <strong>Tutor — ICSS</strong>
+                  <strong>
+                    Tutor,
+                    <a class="ulink" href="https://github.com/dgarcia-eu/ICSS" target="_blank" rel="noopener">ICSS</a>
+                  </strong>
                   <span>
-                    Course by
+                    Introductory computing course for social science students
+                    (Python), by
                     <a class="ulink" href="https://dgarcia.eu/" target="_blank" rel="noopener">Prof. David Garcia</a>,
                     University of Konstanz
                   </span>
@@ -83,7 +87,7 @@
                 <span class="mono">2023 — 2025</span>
                 <div>
                   <strong>Tutor</strong>
-                  <span>Introduction to Empirical Methods, Econometrics, Regression Analysis — University of Hamburg</span>
+                  <span>Introduction to Empirical Methods, Econometrics, Regression Analysis, University of Hamburg</span>
                 </div>
               </li>
             </ul>
@@ -112,7 +116,7 @@
                 </div>
               </li>
               <li>
-                <span class="mono">—</span>
+                <span class="mono">now</span>
                 <div>
                   <strong>Co-Founder, Tiny Room eG</strong>
                   <span>Hamburg</span>
@@ -122,7 +126,6 @@
                 <span class="mono">Lang</span>
                 <div>
                   <strong>German (native), English (fluent)</strong>
-                  <span></span>
                 </div>
               </li>
             </ul>

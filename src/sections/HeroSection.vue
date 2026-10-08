@@ -13,18 +13,14 @@ import ShaderHero from '../components/ShaderHero.vue'
       <div class="hero__meta rv" data-rv-delay="0.3">
         <p class="hero__tag">
           Data scientist in training, economist by foundation, building
-          <a class="ulink accent" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell</a>
-          — a video-sampling groovebox for live visuals.
+          <a class="ulink accent" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell</a>,
+          a video-sampling groovebox for live visuals.
         </p>
         <div class="hero__cta">
           <a class="btn btn--solid" href="#projects">View Projects</a>
           <a class="btn" href="#about">About Me</a>
         </div>
       </div>
-    </div>
-    <div class="hero__scroll mono" aria-hidden="true">
-      <span>Scroll</span>
-      <span class="hero__scroll-line"></span>
     </div>
   </section>
 </template>
@@ -91,44 +87,4 @@ import ShaderHero from '../components/ShaderHero.vue'
   flex-wrap: wrap;
 }
 
-.hero__scroll {
-  position: absolute;
-  right: var(--gutter);
-  bottom: clamp(3rem, 8vh, 6rem);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  writing-mode: vertical-rl;
-  color: #b4b4af;
-}
-
-.hero__scroll-line {
-  width: 1px;
-  height: 4.5rem;
-  background: rgba(242, 242, 239, 0.25);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero__scroll-line::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  animation: drip 2.2s var(--ease-out) infinite;
-}
-
-@keyframes drip {
-  0% { transform: translateY(-100%); }
-  60% { transform: translateY(100%); }
-  100% { transform: translateY(100%); }
-}
-
-@media (max-width: 720px) {
-  .hero__scroll {
-    display: none;
-  }
-}
 </style>

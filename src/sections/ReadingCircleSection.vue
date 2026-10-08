@@ -10,8 +10,8 @@
           <p class="rv">
             A critical reading circle at my university. We read classic and
             contemporary texts on where money comes from, what states do with
-            it, and how the monetary system shapes the economy — from
-            commodity theories to modern monetary theory and beyond.
+            it, and how the monetary system shapes the economy. From commodity
+            theories to modern monetary theory and beyond.
           </p>
           <p class="rv">
             Session materials and readings are hosted here. If your institution
@@ -21,26 +21,26 @@
 
           <div class="rc__sessions">
             <div class="rc__session rv">
-              <span class="mono">Session 01 — TBA</span>
+              <span class="mono">Session 01 · TBA</span>
               <span class="rc__session-title">What is money, actually?</span>
               <span class="mono rc__session-status">Materials forthcoming</span>
             </div>
             <div class="rc__session rv">
-              <span class="mono">Session 02 — TBA</span>
+              <span class="mono">Session 02 · TBA</span>
               <span class="rc__session-title">The state as issuer</span>
               <span class="mono rc__session-status">Materials forthcoming</span>
             </div>
             <div class="rc__session rc__session--soon rv">
               <span class="mono">More sessions</span>
               <span class="rc__session-title">Announced per semester</span>
-              <span class="mono rc__session-status">—</span>
+              <span class="mono rc__session-status">TBA</span>
             </div>
           </div>
 
           <div class="rc__cta rv">
             <!-- TODO(cloudflare): point at R2 public bucket or a Worker-powered
                  mailing-list endpoint once MCP tools are available. -->
-            <a class="btn" href="#top" @click.prevent>Join the mailing list — coming soon</a>
+            <a class="btn" href="#top" @click.prevent>Join the mailing list · coming soon</a>
           </div>
         </div>
       </div>

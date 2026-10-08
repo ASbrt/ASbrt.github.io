@@ -162,6 +162,7 @@ a {
 }
 
 .ulink {
+  color: var(--accent);
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
   background-repeat: no-repeat;

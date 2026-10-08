@@ -1,27 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
-interface Repo {
-  name: string
-  description: string | null
-  language: string | null
-  stargazers_count: number
-  html_url: string
-  fork: boolean
-}
-
-const repos = ref<Repo[]>([])
-const failed = ref(false)
-
-onMounted(async () => {
-  try {
-    const res = await fetch('https://api.github.com/users/ASbrt/repos?sort=pushed&per_page=8')
-    if (!res.ok) throw new Error()
-    repos.value = (await res.json()).filter((r: Repo) => !r.fork)
-  } catch {
-    failed.value = true
-  }
-})
+import repos from '../data/repos.json'
 </script>
 
 <template>
@@ -29,30 +7,26 @@ onMounted(async () => {
     <div class="container">
       <h2 class="display-lg rv">Projects<span class="accent">/</span>Repos</h2>
 
-      <p v-if="failed" class="mono projects__note rv">
-        Live GitHub data unavailable — visit
-        <a class="ulink" href="https://github.com/ASbrt" target="_blank" rel="noopener">github.com/ASbrt</a>.
-      </p>
-
-      <ul v-else class="projects__list">
+      <ul class="projects__list">
         <li v-for="(r, i) in repos" :key="r.name" class="projects__row rv" :data-rv-delay="(i % 4) * 0.06">
           <a :href="r.html_url" target="_blank" rel="noopener" class="projects__link">
             <span class="projects__name">{{ r.name }}</span>
-            <span class="projects__desc">{{ r.description ?? '—' }}</span>
+            <span class="projects__desc">{{ r.description ?? 'No description yet' }}</span>
             <span class="mono projects__lang">{{ r.language ?? '·' }}</span>
             <span class="mono projects__arrow" aria-hidden="true">↗</span>
           </a>
         </li>
       </ul>
+
+      <p class="mono projects__more rv">
+        Full archive on
+        <a class="ulink" href="https://github.com/ASbrt" target="_blank" rel="noopener">github.com/ASbrt</a>
+      </p>
     </div>
   </section>
 </template>
 
 <style scoped>
-.projects__note {
-  margin-top: 2rem;
-}
-
 .projects__list {
   list-style: none;
   margin-top: clamp(2rem, 5vh, 3.5rem);
@@ -107,6 +81,10 @@ onMounted(async () => {
 .projects__link:hover .projects__arrow {
   color: var(--accent);
   transform: translate(3px, -3px);
+}
+
+.projects__more {
+  margin-top: 1.5rem;
 }
 
 @media (max-width: 860px) {
