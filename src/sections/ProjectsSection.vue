@@ -7,6 +7,26 @@ import repos from '../data/repos.json'
     <div class="container">
       <h2 class="display-lg rv">Projects<span class="accent">/</span>Repos</h2>
 
+      <a
+        class="featured rv"
+        href="https://github.com/simone-mazzoli/air_pollution"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="mono featured__tag">Deep Learning · Course Project</span>
+        <span class="featured__title">
+          Mapping Air Pollution and Exposure Inequality in Germany from
+          Satellite Imagery
+        </span>
+        <span class="featured__desc">
+          Predicting annual PM2.5 concentrations from monitoring stations,
+          satellite, and context data, with geographic cross-validation and
+          Kreis-level socioeconomic analysis. Deep learning course project,
+          M.Sc. Social and Economic Data Science, University of Konstanz.
+        </span>
+        <span class="mono featured__cta">View repository ↗</span>
+      </a>
+
       <ul class="projects__list">
         <li v-for="(r, i) in repos" :key="r.name" class="projects__row rv" :data-rv-delay="(i % 4) * 0.06">
           <a :href="r.html_url" target="_blank" rel="noopener" class="projects__link">
@@ -85,6 +105,52 @@ import repos from '../data/repos.json'
 
 .projects__more {
   margin-top: 1.5rem;
+}
+
+.featured {
+  display: grid;
+  gap: 1rem;
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(216, 255, 62, 0.06), transparent 55%),
+    var(--bg-raise);
+  transition: border-color 0.3s var(--ease-out);
+}
+
+.featured:hover {
+  border-color: var(--accent);
+}
+
+.featured:hover .featured__title {
+  color: var(--accent);
+}
+
+.featured__tag {
+  color: var(--accent);
+}
+
+.featured__title {
+  font-weight: 750;
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  transition: color 0.25s var(--ease-out);
+}
+
+.featured__desc {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 44rem;
+}
+
+.featured__cta {
+  color: var(--muted);
+}
+
+.featured:hover .featured__cta {
+  color: var(--accent);
 }
 
 @media (max-width: 860px) {

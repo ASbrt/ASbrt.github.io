@@ -9,26 +9,6 @@
 
         <div class="cv__body">
           <div class="cv__block rv">
-            <p class="mono cv__block-label">Education</p>
-            <ul>
-              <li>
-                <span class="mono">2025 —</span>
-                <div>
-                  <strong>M.Sc. Social and Economic Data Science</strong>
-                  <span>University of Konstanz</span>
-                </div>
-              </li>
-              <li>
-                <span class="mono">2021 — 2025</span>
-                <div>
-                  <strong>B.A. Social Economics, focus: Economics</strong>
-                  <span>University of Hamburg, final grade 1.7</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div class="cv__block rv">
             <p class="mono cv__block-label">Experience</p>
             <ul>
               <li>
@@ -40,21 +20,6 @@
                       Research Group International Politics and Conflict Research
                     </a>
                     (Prof. Nina von Uexküll), University of Konstanz
-                  </span>
-                </div>
-              </li>
-              <li>
-                <span class="mono">2026 —</span>
-                <div>
-                  <strong>
-                    Tutor,
-                    <a class="ulink" href="https://github.com/dgarcia-eu/ICSS" target="_blank" rel="noopener">ICSS</a>
-                  </strong>
-                  <span>
-                    Introductory computing course for social science students
-                    (Python), by
-                    <a class="ulink" href="https://dgarcia.eu/" target="_blank" rel="noopener">Prof. David Garcia</a>,
-                    University of Konstanz
                   </span>
                 </div>
               </li>
@@ -83,11 +48,65 @@
                   <span>Chair of Sociology, esp. Empirical Social Research, University of Hamburg</span>
                 </div>
               </li>
+            </ul>
+          </div>
+
+          <div class="cv__block rv">
+            <p class="mono cv__block-label">Teaching</p>
+            <ul>
+              <li>
+                <span class="mono">2026 —</span>
+                <div>
+                  <strong>
+                    <a class="ulink" href="https://github.com/dgarcia-eu/ICSS" target="_blank" rel="noopener">ICSS</a>
+                  </strong>
+                  <span>
+                    Introductory computing course for social science students
+                    (Python tutorials), course by
+                    <a class="ulink" href="https://dgarcia.eu/" target="_blank" rel="noopener">Prof. David Garcia</a>,
+                    University of Konstanz
+                  </span>
+                </div>
+              </li>
               <li>
                 <span class="mono">2023 — 2025</span>
                 <div>
-                  <strong>Tutor</strong>
-                  <span>Introduction to Empirical Methods, Econometrics, Regression Analysis, University of Hamburg</span>
+                  <strong>Introduction to Empirical Methods</strong>
+                  <span>Tutor, University of Hamburg</span>
+                </div>
+              </li>
+              <li>
+                <span class="mono">2023 — 2025</span>
+                <div>
+                  <strong>Econometrics</strong>
+                  <span>Tutor, University of Hamburg</span>
+                </div>
+              </li>
+              <li>
+                <span class="mono">2023 — 2025</span>
+                <div>
+                  <strong>Regression Analysis</strong>
+                  <span>Tutor, University of Hamburg</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="cv__block rv">
+            <p class="mono cv__block-label">Education</p>
+            <ul>
+              <li>
+                <span class="mono">2025 —</span>
+                <div>
+                  <strong>M.Sc. Social and Economic Data Science</strong>
+                  <span>University of Konstanz</span>
+                </div>
+              </li>
+              <li>
+                <span class="mono">2021 — 2025</span>
+                <div>
+                  <strong>B.A. Social Economics, focus: Economics</strong>
+                  <span>University of Hamburg, final grade 1.7</span>
                 </div>
               </li>
             </ul>

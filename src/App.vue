@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -14,12 +14,28 @@ import SiteFooter from './components/SiteFooter.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
+let lenis: Lenis | null = null
+
+// smooth-scroll all in-page anchor links instead of jumping
+const onAnchorClick = (e: MouseEvent) => {
+  const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]')
+  if (!a || !lenis) return
+  const hash = a.getAttribute('href')
+  if (!hash || hash === '#') return
+  const el = document.querySelector(hash)
+  if (!el) return
+  e.preventDefault()
+  lenis.scrollTo(el as HTMLElement, { duration: 1.4 })
+}
+
 onMounted(() => {
   // inertia scroll driving ScrollTrigger
-  const lenis = new Lenis({ lerp: 0.09 })
+  lenis = new Lenis({ lerp: 0.09 })
   lenis.on('scroll', ScrollTrigger.update)
-  gsap.ticker.add((time) => lenis.raf(time * 1000))
+  gsap.ticker.add((time) => lenis!.raf(time * 1000))
   gsap.ticker.lagSmoothing(0)
+
+  document.addEventListener('click', onAnchorClick)
 
   // generic reveal-on-scroll
   gsap.utils.toArray<HTMLElement>('.rv').forEach((el) => {
@@ -47,7 +63,10 @@ onMounted(() => {
     )
   })
 })
-</script>
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onAnchorClick)
+})</script>
 
 <template>
   <SiteNav />

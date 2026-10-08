@@ -7,9 +7,9 @@
             Hi, I'm<br />Aaron<span class="accent">.</span>
           </h2>
           <p class="about__pull display-lg rv" data-rv-delay="0.1">
-            I study how economic pressure
-            <span class="accent">moves societies</span>,
-            and I build the tools to see it.
+            I use data and models to understand
+            <span class="accent">conflict and the environment</span>.
+            Off the clock, I build tools and instruments.
           </p>
         </div>
 
@@ -23,7 +23,15 @@
               rel="noopener"
               >International Politics and Conflict Research</a
             >
-            group at the University of Konstanz and a student in the M.Sc.
+            group of
+            <a
+              class="ulink"
+              href="https://www.polver.uni-konstanz.de/research-group-international-politics-and-conflict/"
+              target="_blank"
+              rel="noopener"
+              >Prof. Nina von Uexküll</a
+            >
+            at the University of Konstanz and a student in the M.Sc.
             Social and Economic Data Science program. I hold a Bachelor's
             degree in Social Economics from the University of Hamburg, where I
             also worked as a tutor for empirical methods, econometrics, and
@@ -44,14 +52,16 @@
             <a class="ulink" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell</a>,
             a video-sampling groovebox for live visuals and a Hamburg
             Kreativgesellschaft Development Award winner, born from making
-            music and wanting VJ tools that work like instruments.
+            music and wanting VJ tools that work like instruments. I also
+            design and build websites by hand, this one included: no template,
+            just Vue, Three.js, and a custom shader.
           </p>
 
           <ul class="about__facts">
             <li class="rv"><span class="mono">Focus</span><span>Data Science · Computational Social Science</span></li>
             <li class="rv"><span class="mono">Interests</span><span>ML &amp; AI Research · ABM · Conflict Research</span></li>
             <li class="rv"><span class="mono">Currently</span><span>Tutor &amp; Research Assistant, Konstanz</span></li>
-            <li class="rv"><span class="mono">Also</span><span>Music · Live Visuals · Rust (learning)</span></li>
+            <li class="rv"><span class="mono">Also</span><span>Music · Live Visuals · Web Design</span></li>
           </ul>
         </div>
       </div>

@@ -14,13 +14,6 @@
     "html_url": "https://github.com/ASbrt/ICSS_bot"
   },
   {
-    "name": "mining-classification",
-    "description": null,
-    "language": "R",
-    "stargazers_count": 0,
-    "html_url": "https://github.com/ASbrt/mining-classification"
-  },
-  {
     "name": "scoutbot",
     "description": "Scoutbot is a project that implements a game engine for the card game 'Scout'. The goal of this project is to provide a platform for learning ML techniques. ",
     "language": "Python",
