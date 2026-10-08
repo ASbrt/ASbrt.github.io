@@ -18,7 +18,10 @@
             computational social science — in particular how environmental and
             economic factors shape social and political dynamics, and how
             quantitative methods and agent-based modeling can be applied to the
-            study of societal processes.
+            study of societal processes. Lately this has been pulling me toward
+            machine learning and AI research; a run of ML courses last semester
+            set the direction, and I'm currently going deeper — and learning
+            Rust along the way.
           </p>
           <p class="rv">
             Away from research I build things: my current project is
@@ -29,9 +32,9 @@
           </p>
           <ul class="about__facts mono">
             <li class="rv"><span>Focus</span><span>Data Science · Computational Social Science</span></li>
-            <li class="rv"><span>Interests</span><span>Environmental Economics · Conflict Research · ABM</span></li>
-            <li class="rv"><span>Base</span><span>Konstanz, Germany</span></li>
-            <li class="rv"><span>Also</span><span>Music · Live Visuals · Reading circles</span></li>
+            <li class="rv"><span>Interests</span><span>ML &amp; AI Research · Environmental Economics · Conflict Research · ABM</span></li>
+            <li class="rv"><span>Currently</span><span>Tutor &amp; Research Assistant, Konstanz</span></li>
+            <li class="rv"><span>Also</span><span>Music · Live Visuals · Rust (learning)</span></li>
           </ul>
         </div>
       </div>

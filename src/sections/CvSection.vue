@@ -39,10 +39,17 @@
                 </div>
               </li>
               <li>
-                <span class="mono">2025 —</span>
+                <span class="mono">2026 —</span>
                 <div>
-                  <strong>Student Assistant, M.Sc. SEDS program</strong>
-                  <span>University of Konstanz</span>
+                  <strong>Tutor — ICSS</strong>
+                  <span>Course by David Garcia, University of Konstanz</span>
+                </div>
+              </li>
+              <li>
+                <span class="mono">11/2026 —</span>
+                <div>
+                  <strong>Student Research Assistant</strong>
+                  <span>Research project with David Garcia, University of Konstanz</span>
                 </div>
               </li>
               <li>
@@ -72,7 +79,7 @@
           <div class="cv__block rv">
             <p class="mono cv__block-label">Skills</p>
             <ul class="cv__skills">
-              <li><span class="mono">Programming</span><span>Python, R, SQL / PostgreSQL</span></li>
+              <li><span class="mono">Programming</span><span>Python, R, SQL / PostgreSQL, Rust (learning)</span></li>
               <li><span class="mono">Machine Learning</span><span>PyTorch, scikit-learn, Hugging Face</span></li>
               <li><span class="mono">Data Analysis</span><span>pandas, NumPy, Jupyter</span></li>
               <li><span class="mono">Statistical Methods</span><span>econometrics, regression, time-series analysis</span></li>
