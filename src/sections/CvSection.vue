@@ -35,21 +35,34 @@
                 <span class="mono">2026 —</span>
                 <div>
                   <strong>Student Research Assistant</strong>
-                  <span>International Politics and Conflict Research, University of Konstanz</span>
+                  <span>
+                    <a class="ulink" href="https://www.polver.uni-konstanz.de/research-group-international-politics-and-conflict/" target="_blank" rel="noopener">
+                      Research Group International Politics and Conflict Research
+                    </a>
+                    (Prof. Nina von Uexküll), University of Konstanz
+                  </span>
                 </div>
               </li>
               <li>
                 <span class="mono">2026 —</span>
                 <div>
                   <strong>Tutor — ICSS</strong>
-                  <span>Course by David Garcia, University of Konstanz</span>
+                  <span>
+                    Course by
+                    <a class="ulink" href="https://dgarcia.eu/" target="_blank" rel="noopener">Prof. David Garcia</a>,
+                    University of Konstanz
+                  </span>
                 </div>
               </li>
               <li>
                 <span class="mono">11/2026 —</span>
                 <div>
                   <strong>Student Research Assistant</strong>
-                  <span>Research project with David Garcia, University of Konstanz</span>
+                  <span>
+                    Research project with
+                    <a class="ulink" href="https://dgarcia.eu/" target="_blank" rel="noopener">Prof. David Garcia</a>,
+                    University of Konstanz
+                  </span>
                 </div>
               </li>
               <li>

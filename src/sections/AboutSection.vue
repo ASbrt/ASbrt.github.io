@@ -7,9 +7,10 @@
         </h2>
         <div class="about__body">
           <p class="rv">
-            I'm a Research Assistant at the University of Konstanz and a
-            student in the M.Sc. Social and Economic Data Science program. I
-            hold a Bachelor's degree in Social Economics from the University of
+            I'm a Research Assistant in the International Politics and Conflict
+            Research group at the University of Konstanz and a student in the
+            M.Sc. Social and Economic Data Science program. I hold a
+            Bachelor's degree in Social Economics from the University of
             Hamburg, where I also worked as a tutor for empirical methods,
             econometrics, and regression analysis.
           </p>
