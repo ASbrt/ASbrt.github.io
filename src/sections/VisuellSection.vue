@@ -11,9 +11,8 @@
           </h2>
           <p class="rv">
             Visuell is a browser-based video instrument for live visuals.
-            Sample clips from a built-in pool or your own files, cut them on a
-            filmstrip, map them to pads, and perform live: scene sequencing,
-            MIDI control, WebGL effects, and a recordable master output. No
+            Sample clips on a filmstrip, sequence scenes, and perform live
+            with MIDI, WebGL effects, and a recordable master output. No
             install, runs in the browser.
           </p>
 
@@ -35,38 +34,45 @@
             </li>
           </ol>
 
-          <ul class="visuell__feats mono">
-            <li class="rv">Live video inputs</li>
-            <li class="rv">MIDI mapping + clock sync</li>
-            <li class="rv">WebGL effects + procedural generators</li>
-            <li class="rv">Master-output recording</li>
-          </ul>
-
-          <ul class="visuell__specs mono">
-            <li class="rv"><span>Recognition</span><span>Development Award Music Worx 2024</span></li>
-            <li class="rv"><span>Status</span><span>In development</span></li>
-          </ul>
-
           <a class="btn btn--solid rv" href="https://www.visuell.art/" target="_blank" rel="noopener">
             Open visuell.art ↗
           </a>
         </div>
 
-        <figure class="visuell__media rv" data-parallax="0.06">
-          <img
-            src="../assets/visuell-brand.jpg"
-            alt="Visuell wordmark on an orange and blue abstract visual"
-            loading="lazy"
-          />
-          <figcaption class="mono">Visuell / brand visual, visuell.art</figcaption>
-        </figure>
+        <div class="visuell__demo rv" data-rv-delay="0.1">
+          <VisuellShader />
+          <p class="mono visuell__demo-caption">
+            Live in your browser: three generators from the visuell shader
+            catalog, parameters and all.
+          </p>
+        </div>
+      </div>
+
+      <div class="visuell__facts">
+        <ul class="visuell__feats mono">
+          <li class="rv">Live video inputs</li>
+          <li class="rv">MIDI mapping + clock sync</li>
+          <li class="rv">WebGL effects + procedural generators</li>
+          <li class="rv">Master-output recording</li>
+        </ul>
+
+        <ul class="visuell__specs mono">
+          <li class="rv"><span>Recognition</span><span>Development Award Music Worx 2024</span></li>
+          <li class="rv"><span>Status</span><span>In development</span></li>
+        </ul>
       </div>
     </div>
   </section>
 </template>
 
+<script setup lang="ts">
+import VisuellShader from '../components/VisuellShader.vue'
+</script>
+
 <style scoped>
+/* visuell's own brand accent takes over inside this section */
 .section--visuell {
+  --accent: #f2ca00;
   background: var(--bg-raise);
   border-block: 1px solid var(--line);
   overflow: hidden;
@@ -89,7 +95,7 @@
 
 .visuell__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: clamp(2rem, 6vw, 5rem);
   align-items: center;
 }
@@ -104,7 +110,7 @@
   color: var(--muted);
   font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   line-height: 1.65;
-  max-width: 34rem;
+  max-width: 32rem;
 }
 
 /* how it works */
@@ -145,7 +151,28 @@
   line-height: 1.5;
 }
 
-/* real feature chips */
+/* demo */
+.visuell__demo {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.visuell__demo-caption {
+  color: var(--muted);
+  line-height: 1.6;
+  text-transform: none;
+  letter-spacing: 0.03em;
+}
+
+/* facts row */
+.visuell__facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  margin-top: clamp(3rem, 7vh, 5rem);
+  align-items: start;
+}
+
 .visuell__feats {
   list-style: none;
   display: flex;
@@ -169,10 +196,8 @@
   color: var(--accent);
 }
 
-/* specs */
 .visuell__specs {
   list-style: none;
-  width: 100%;
   border-top: 1px solid var(--line);
 }
 
@@ -191,38 +216,9 @@
   text-align: right;
 }
 
-/* brand visual */
-.visuell__media {
-  position: relative;
-  border: 1px solid var(--line);
-  overflow: hidden;
-  background: var(--bg);
-}
-
-.visuell__media img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: saturate(0.85);
-  transition: filter 0.4s var(--ease-out), transform 0.8s var(--ease-out);
-}
-
-.visuell__media:hover img {
-  filter: saturate(1.15);
-  transform: scale(1.02);
-}
-
-.visuell__media figcaption {
-  position: absolute;
-  left: 1rem;
-  bottom: 0.9rem;
-  padding: 0.3rem 0.6rem;
-  background: rgba(10, 10, 11, 0.7);
-  backdrop-filter: blur(4px);
-}
-
 @media (max-width: 860px) {
-  .visuell__grid {
+  .visuell__grid,
+  .visuell__facts {
     grid-template-columns: 1fr;
   }
   .visuell__steps {
