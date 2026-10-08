@@ -1,8 +1,6 @@
 <template>
   <section id="visuell" class="section section--visuell">
     <div class="container">
-      <p class="section-tag mono"><span class="idx">03</span> Current Build</p>
-
       <div class="visuell__stage" data-parallax="0.12">
         <div class="visuell__panel" aria-hidden="true">
           <span class="visuell__panel-label mono">VISUELL — SIGNAL 001</span>

@@ -95,31 +95,11 @@ a {
   position: relative;
 }
 
-.section-tag {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: clamp(2rem, 5vh, 3.5rem);
-}
-
-.section-tag::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
-
-.section-tag .idx {
-  color: var(--accent);
-}
-
-/* reveal-on-scroll primitives (animated via GSAP) */
+/* —— display type —— */
 .rv {
   opacity: 0;
   transform: translateY(2.5rem);
 }
-
-/* —— display type —— */
 
 .display-xl {
   font-weight: 800;
@@ -152,8 +132,11 @@ a {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink);
-  border: 1px solid var(--line);
+  background: rgba(10, 10, 11, 0.55);
+  border: 1px solid rgba(242, 242, 239, 0.28);
   padding: 0.85rem 1.4rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   transition:
     background 0.25s var(--ease-out),
     color 0.25s var(--ease-out),

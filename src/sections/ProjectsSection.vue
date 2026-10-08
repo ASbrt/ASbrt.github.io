@@ -27,7 +27,6 @@ onMounted(async () => {
 <template>
   <section id="projects" class="section">
     <div class="container">
-      <p class="section-tag mono"><span class="idx">02</span> Selected Work</p>
       <h2 class="display-lg rv">Projects<span class="accent">/</span>Repos</h2>
 
       <p v-if="failed" class="mono projects__note rv">

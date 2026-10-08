@@ -1,31 +1,37 @@
 <template>
   <section id="about" class="section">
     <div class="container">
-      <p class="section-tag mono"><span class="idx">01</span> About</p>
       <div class="about__grid">
         <h2 class="display-lg rv">
-          Economics<br />→ Data<br /><span class="accent">→ Models</span>
+          Hi, I'm<br />Aaron<span class="accent">.</span>
         </h2>
         <div class="about__body">
           <p class="rv">
-            I'm Aaron — a data science master's student with an economics
-            background, and a long-standing habit of building things that
-            shouldn't exist yet. I care about how quantitative methods change
-            the way we see economic and social systems — and about making the
-            tools themselves more intuitive and more alive.
+            I'm a Research Assistant at the University of Konstanz and a
+            student in the M.Sc. Social and Economic Data Science program. I
+            hold a Bachelor's degree in Social Economics from the University of
+            Hamburg, where I also worked as a tutor for empirical methods,
+            econometrics, and regression analysis.
           </p>
           <p class="rv">
-            That habit pulled me from econometrics into machine learning, and
-            eventually into creative technology: my current side project,
+            My interests lie in environmental economics, conflict research, and
+            computational social science — in particular how environmental and
+            economic factors shape social and political dynamics, and how
+            quantitative methods and agent-based modeling can be applied to the
+            study of societal processes.
+          </p>
+          <p class="rv">
+            Away from research I build things: my current project is
             <a class="ulink accent" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell</a>,
-            is a video-sampling groovebox for live visuals. On the side I make
-            music, which is where the groovebox came from.
+            a video-sampling groovebox for live visuals — a Hamburg
+            Kreativgesellschaft Development Award winner, born from making
+            music and wanting VJ tools that work like instruments.
           </p>
           <ul class="about__facts mono">
-            <li class="rv"><span>Focus</span><span>ML · Data Science · Creative Tech</span></li>
-            <li class="rv"><span>Base</span><span>Germany</span></li>
-            <li class="rv"><span>Currently</span><span>M.Sc. Data Science</span></li>
-            <li class="rv"><span>Also</span><span>Music · Reading circles</span></li>
+            <li class="rv"><span>Focus</span><span>Data Science · Computational Social Science</span></li>
+            <li class="rv"><span>Interests</span><span>Environmental Economics · Conflict Research · ABM</span></li>
+            <li class="rv"><span>Base</span><span>Konstanz, Germany</span></li>
+            <li class="rv"><span>Also</span><span>Music · Live Visuals · Reading circles</span></li>
           </ul>
         </div>
       </div>

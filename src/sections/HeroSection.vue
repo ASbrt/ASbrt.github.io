@@ -5,8 +5,7 @@ import ShaderHero from '../components/ShaderHero.vue'
 <template>
   <section class="hero">
     <ShaderHero />
-    <div class="hero__content container">
-      <p class="mono hero__kicker rv">Data Science × Economics × Live Visuals — Germany</p>
+    <div class="hero__content">
       <h1 class="display-xl">
         <span class="rv" data-rv-delay="0.05">Aaron</span>
         <span class="rv hero__line2" data-rv-delay="0.15">Siebert<em class="accent">.</em></span>
@@ -19,7 +18,7 @@ import ShaderHero from '../components/ShaderHero.vue'
         </p>
         <div class="hero__cta">
           <a class="btn btn--solid" href="#projects">View Projects</a>
-          <a class="btn" href="#reading-circle">Reading Circle</a>
+          <a class="btn" href="#about">About Me</a>
         </div>
       </div>
     </div>
@@ -39,16 +38,28 @@ import ShaderHero from '../components/ShaderHero.vue'
   overflow: hidden;
 }
 
+/* readability scrim — anchors text against the shader */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 11, 0.92) 0%,
+    rgba(10, 10, 11, 0.55) 30%,
+    rgba(10, 10, 11, 0) 60%
+  );
+  pointer-events: none;
+}
+
 .hero__content {
   position: relative;
   z-index: 2;
   width: 100%;
+  padding-inline: var(--gutter);
   padding-bottom: clamp(3rem, 8vh, 6rem);
   padding-top: 6rem;
-}
-
-.hero__kicker {
-  margin-bottom: 1.25rem;
 }
 
 .hero__line2 {
@@ -63,14 +74,15 @@ import ShaderHero from '../components/ShaderHero.vue'
   gap: 2rem;
   margin-top: clamp(1.5rem, 4vh, 3rem);
   padding-top: 1.5rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(242, 242, 239, 0.22);
 }
 
 .hero__tag {
   max-width: 34rem;
   font-size: clamp(1rem, 1.6vw, 1.25rem);
   line-height: 1.55;
-  color: var(--muted);
+  color: #d9d9d4;
+  text-shadow: 0 1px 12px rgba(10, 10, 11, 0.6);
 }
 
 .hero__cta {
@@ -89,12 +101,13 @@ import ShaderHero from '../components/ShaderHero.vue'
   align-items: center;
   gap: 0.75rem;
   writing-mode: vertical-rl;
+  color: #b4b4af;
 }
 
 .hero__scroll-line {
   width: 1px;
   height: 4.5rem;
-  background: var(--line);
+  background: rgba(242, 242, 239, 0.25);
   position: relative;
   overflow: hidden;
 }

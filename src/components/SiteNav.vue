@@ -3,7 +3,6 @@ const links = [
   { href: '#about', label: 'About' },
   { href: '#projects', label: 'Projects' },
   { href: '#visuell', label: 'Visuell' },
-  { href: '#reading-circle', label: 'Reading Circle' },
   { href: '#cv', label: 'CV' },
 ]
 </script>
@@ -30,8 +29,8 @@ const links = [
   align-items: center;
   justify-content: space-between;
   padding: 1rem var(--gutter);
-  mix-blend-mode: difference;
   color: #fff;
+  background: linear-gradient(to bottom, rgba(10, 10, 11, 0.75), transparent);
 }
 
 .nav__logo {

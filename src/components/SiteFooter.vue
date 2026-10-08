@@ -8,7 +8,7 @@
         <div class="footer__links mono">
           <a class="ulink" href="https://github.com/ASbrt" target="_blank" rel="noopener">GitHub</a>
           <a class="ulink" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell.art</a>
-          <!-- TODO: LinkedIn / email once you want them public -->
+          <a class="ulink" href="mailto:aaronsiebert@protonmail.com">aaronsiebert@protonmail.com</a>
         </div>
       </div>
       <div class="footer__bottom mono">

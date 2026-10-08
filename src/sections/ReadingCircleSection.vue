@@ -1,8 +1,6 @@
 <template>
   <section id="reading-circle" class="section">
     <div class="container">
-      <p class="section-tag mono"><span class="idx">04</span> Reading Circle</p>
-
       <div class="rc__grid">
         <h2 class="display-lg rv">
           Money, the<br />State &amp; the<br /><span class="accent">Economy</span>
