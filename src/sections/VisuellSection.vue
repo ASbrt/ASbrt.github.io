@@ -10,79 +10,60 @@
             <span class="accent">samples</span>.
           </h2>
           <p class="rv">
-            DJ gear changed how we play music. VJ tools never got the same
-            treatment. Visuell closes that gap: a video-sampling instrument
-            where clips are cut into pads and performed live, with the timing
-            and feel of a drum machine.
+            Visuell is a browser-based video instrument for live visuals.
+            Sample clips from a built-in pool or your own files, cut them on a
+            filmstrip, map them to pads, and perform live: scene sequencing,
+            MIDI control, WebGL effects, and a recordable master output. No
+            install, runs in the browser.
           </p>
 
           <ol class="visuell__steps">
             <li class="rv">
               <span class="mono">01</span>
-              <strong>Load</strong>
-              <span>Drop in video clips, a camera feed, anything visual.</span>
+              <strong>Sample</strong>
+              <span>Grab clips and trim them on a filmstrip.</span>
             </li>
             <li class="rv">
               <span class="mono">02</span>
-              <strong>Slice</strong>
-              <span>Cut footage into segments and map them to pads.</span>
+              <strong>Sequence</strong>
+              <span>Arrange scenes and morph between them.</span>
             </li>
             <li class="rv">
               <span class="mono">03</span>
               <strong>Perform</strong>
-              <span>Trigger, layer, and play visuals live like an instrument.</span>
+              <span>Play pads live with MIDI, effects, and recording.</span>
             </li>
           </ol>
 
+          <ul class="visuell__feats mono">
+            <li class="rv">Live video inputs</li>
+            <li class="rv">MIDI mapping + clock sync</li>
+            <li class="rv">WebGL effects + procedural generators</li>
+            <li class="rv">Master-output recording</li>
+          </ul>
+
           <ul class="visuell__specs mono">
-            <li class="rv"><span>Type</span><span>Startup / Creative Tool</span></li>
-            <li class="rv"><span>Role</span><span>Founder, Design &amp; Build</span></li>
             <li class="rv"><span>Recognition</span><span>Development Award Music Worx 2024</span></li>
             <li class="rv"><span>Status</span><span>In development</span></li>
           </ul>
 
           <a class="btn btn--solid rv" href="https://www.visuell.art/" target="_blank" rel="noopener">
-            Visit visuell.art ↗
+            Open visuell.art ↗
           </a>
         </div>
 
-        <div class="visuell__panel rv" data-parallax="0.1" aria-hidden="true">
-          <span class="visuell__panel-label mono">VISUELL / SIGNAL 001</span>
-          <div class="visuell__pads">
-            <span
-              v-for="i in 16"
-              :key="i"
-              class="visuell__pad"
-              :class="{ 'visuell__pad--hot': hotPad === i }"
-              :style="i === hotPad ? { '--intensity': intensity } : {}"
-            ></span>
-          </div>
-          <div class="visuell__bars">
-            <span v-for="i in 24" :key="i" :style="{ '--d': `${(i * 137.5) % 100}ms` }"></span>
-          </div>
-        </div>
+        <figure class="visuell__media rv" data-parallax="0.06">
+          <img
+            src="../assets/visuell-brand.jpg"
+            alt="Visuell wordmark on an orange and blue abstract visual"
+            loading="lazy"
+          />
+          <figcaption class="mono">Visuell / brand visual, visuell.art</figcaption>
+        </figure>
       </div>
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-
-// pads light up in a random pattern, like a clip being performed
-const hotPad = ref(0)
-const intensity = ref(0.9)
-let timer: ReturnType<typeof setInterval> | undefined
-
-onMounted(() => {
-  timer = setInterval(() => {
-    hotPad.value = Math.floor(Math.random() * 16) + 1
-    intensity.value = 0.4 + Math.random() * 0.6
-  }, 420)
-})
-
-onBeforeUnmount(() => clearInterval(timer))
-</script>
 
 <style scoped>
 .section--visuell {
@@ -91,7 +72,7 @@ onBeforeUnmount(() => clearInterval(timer))
   overflow: hidden;
 }
 
-/* giant outlined wordmark bleeding off the right edge */
+/* giant outlined wordmark bleeding off the left edge */
 .visuell__word {
   font-weight: 800;
   font-size: clamp(5rem, 17vw, 17rem);
@@ -108,7 +89,7 @@ onBeforeUnmount(() => clearInterval(timer))
 
 .visuell__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: clamp(2rem, 6vw, 5rem);
   align-items: center;
 }
@@ -123,7 +104,7 @@ onBeforeUnmount(() => clearInterval(timer))
   color: var(--muted);
   font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   line-height: 1.65;
-  max-width: 32rem;
+  max-width: 34rem;
 }
 
 /* how it works */
@@ -164,6 +145,30 @@ onBeforeUnmount(() => clearInterval(timer))
   line-height: 1.5;
 }
 
+/* real feature chips */
+.visuell__feats {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.visuell__feats li {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.85rem;
+  text-transform: none;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  transition:
+    border-color 0.25s var(--ease-out),
+    color 0.25s var(--ease-out);
+}
+
+.visuell__feats li:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* specs */
 .visuell__specs {
   list-style: none;
@@ -186,70 +191,34 @@ onBeforeUnmount(() => clearInterval(timer))
   text-align: right;
 }
 
-/* instrument panel */
-.visuell__panel {
+/* brand visual */
+.visuell__media {
   position: relative;
-  aspect-ratio: 4 / 4.6;
   border: 1px solid var(--line);
-  background:
-    radial-gradient(120% 100% at 20% 0%, rgba(216, 255, 62, 0.07), transparent 55%),
-    var(--bg);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1.25rem;
+  background: var(--bg);
 }
 
-.visuell__panel-label {
-  position: absolute;
-  top: 1.25rem;
-  left: 1.25rem;
-}
-
-.visuell__pads {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-top: 2rem;
-}
-
-.visuell__pad {
-  aspect-ratio: 1;
-  border: 1px solid var(--line);
-  background: var(--bg-raise);
-  transition:
-    background 0.18s ease-out,
-    box-shadow 0.18s ease-out,
-    border-color 0.18s ease-out;
-}
-
-.visuell__pad--hot {
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 calc(24px * var(--intensity, 0.8)) rgba(216, 255, 62, 0.45);
-}
-
-.visuell__bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
+.visuell__media img {
+  display: block;
   width: 100%;
-  height: 18%;
+  height: auto;
+  filter: saturate(0.85);
+  transition: filter 0.4s var(--ease-out), transform 0.8s var(--ease-out);
 }
 
-.visuell__bars span {
-  flex: 1;
-  background: var(--accent);
-  height: 20%;
-  animation: bar 1.6s ease-in-out infinite alternate;
-  animation-delay: var(--d);
-  opacity: 0.85;
+.visuell__media:hover img {
+  filter: saturate(1.15);
+  transform: scale(1.02);
 }
 
-@keyframes bar {
-  from { height: 12%; }
-  to { height: 96%; }
+.visuell__media figcaption {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.9rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(10, 10, 11, 0.7);
+  backdrop-filter: blur(4px);
 }
 
 @media (max-width: 860px) {
@@ -258,9 +227,6 @@ onBeforeUnmount(() => clearInterval(timer))
   }
   .visuell__steps {
     grid-template-columns: 1fr;
-  }
-  .visuell__panel {
-    aspect-ratio: 4 / 3.4;
   }
 }
 </style>
