@@ -23,15 +23,8 @@
               rel="noopener"
               >International Politics and Conflict Research</a
             >
-            group of
-            <a
-              class="ulink"
-              href="https://www.polver.uni-konstanz.de/research-group-international-politics-and-conflict/"
-              target="_blank"
-              rel="noopener"
-              >Prof. Nina von Uexküll</a
-            >
-            at the University of Konstanz and a student in the M.Sc.
+            group of Prof. Nina von Uexkull at the University of Konstanz and
+            a student in the M.Sc.
             Social and Economic Data Science program. I hold a Bachelor's
             degree in Social Economics from the University of Hamburg, where I
             also worked as a tutor for empirical methods, econometrics, and

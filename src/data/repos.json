@@ -1,12 +1,5 @@
 [
   {
-    "name": "competition-under-interdependence",
-    "description": "Final Project for https://github.com/carinahausladen/konstanz-dynamic-social-behavior",
-    "language": "Python",
-    "stargazers_count": 0,
-    "html_url": "https://github.com/ASbrt/competition-under-interdependence"
-  },
-  {
     "name": "ICSS_bot",
     "description": "A simple bot structure for sharing python related facts and quizzes with students",
     "language": "Rust",

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
 const out = resolve(dirname(fileURLToPath(import.meta.url)), '../src/data/repos.json')
-const EXCLUDE = ['ASbrt.github.io', 'mining-classification']
+const EXCLUDE = ['ASbrt.github.io', 'mining-classification', 'competition-under-interdependence']
 
 const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'asbrt-site-build' }
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`

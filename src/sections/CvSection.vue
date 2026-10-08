@@ -19,7 +19,7 @@
                     <a class="ulink" href="https://www.polver.uni-konstanz.de/research-group-international-politics-and-conflict/" target="_blank" rel="noopener">
                       Research Group International Politics and Conflict Research
                     </a>
-                    (Prof. Nina von Uexküll), University of Konstanz
+                    (Prof. Nina von Uexkull), University of Konstanz
                   </span>
                 </div>
               </li>
@@ -71,21 +71,7 @@
               <li>
                 <span class="mono">2023 — 2025</span>
                 <div>
-                  <strong>Introduction to Empirical Methods</strong>
-                  <span>Tutor, University of Hamburg</span>
-                </div>
-              </li>
-              <li>
-                <span class="mono">2023 — 2025</span>
-                <div>
-                  <strong>Econometrics</strong>
-                  <span>Tutor, University of Hamburg</span>
-                </div>
-              </li>
-              <li>
-                <span class="mono">2023 — 2025</span>
-                <div>
-                  <strong>Regression Analysis</strong>
+                  <strong>Introduction to Empirical Methods · Econometrics · Regression Analysis</strong>
                   <span>Tutor, University of Hamburg</span>
                 </div>
               </li>

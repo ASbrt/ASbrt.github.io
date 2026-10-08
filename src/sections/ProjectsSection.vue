@@ -5,28 +5,63 @@ import repos from '../data/repos.json'
 <template>
   <section id="projects" class="section">
     <div class="container">
-      <h2 class="display-lg rv">Projects<span class="accent">/</span>Repos</h2>
+      <h2 class="display-lg rv">Projects<span class="accent">/</span>Papers</h2>
 
-      <a
-        class="featured rv"
-        href="https://github.com/simone-mazzoli/air_pollution"
-        target="_blank"
-        rel="noopener"
-      >
-        <span class="mono featured__tag">Deep Learning · Course Project</span>
-        <span class="featured__title">
-          Mapping Air Pollution and Exposure Inequality in Germany from
-          Satellite Imagery
-        </span>
-        <span class="featured__desc">
-          Predicting annual PM2.5 concentrations from monitoring stations,
-          satellite, and context data, with geographic cross-validation and
-          Kreis-level socioeconomic analysis. Deep learning course project,
-          M.Sc. Social and Economic Data Science, University of Konstanz.
-        </span>
-        <span class="mono featured__cta">View repository ↗</span>
-      </a>
+      <div class="papers">
+        <article class="paper rv">
+          <h3 class="paper__title">
+            Mapping Air Pollution and Exposure Inequality in Germany from
+            Satellite Imagery
+          </h3>
+          <p class="mono paper__context">
+            Course project, Deep Learning for Social Scientists · M.Sc. SEDS,
+            University of Konstanz
+          </p>
+          <p class="paper__desc">
+            Predicting annual PM2.5 concentrations from monitoring stations,
+            satellite, and context data, with geographic cross-validation and
+            Kreis-level socioeconomic analysis. With Lisanne Dolleman, David
+            Marasek, and Simone Mazzoli.
+          </p>
+          <div class="mono paper__links">
+            <a class="ulink" href="https://github.com/simone-mazzoli/air_pollution" target="_blank" rel="noopener">Repository ↗</a>
+            <a
+              class="ulink"
+              href="https://github.com/simone-mazzoli/air_pollution/blob/main/Air_pollution_report/build/main_merged.pdf"
+              target="_blank"
+              rel="noopener"
+              >Paper (PDF) ↗</a
+            >
+          </div>
+        </article>
 
+        <article class="paper rv" data-rv-delay="0.08">
+          <h3 class="paper__title">
+            Institutional Coordination under Interdependence
+          </h3>
+          <p class="mono paper__context">
+            Final paper, Dynamic Social Behavior seminar · University of
+            Konstanz
+          </p>
+          <p class="paper__desc">
+            An agent-based simulation of how exchange protocols interact with
+            behavioral heterogeneity when coordination capacity is scarce,
+            including a tabular baseline planner as a reference strategy.
+          </p>
+          <div class="mono paper__links">
+            <a class="ulink" href="https://github.com/ASbrt/competition-under-interdependence" target="_blank" rel="noopener">Repository ↗</a>
+            <a
+              class="ulink"
+              href="https://github.com/ASbrt/competition-under-interdependence/blob/main/submission/FinalPaper.pdf"
+              target="_blank"
+              rel="noopener"
+              >Paper (PDF) ↗</a
+            >
+          </div>
+        </article>
+      </div>
+
+      <p class="group-label mono rv">Additional projects</p>
       <ul class="projects__list">
         <li v-for="(r, i) in repos" :key="r.name" class="projects__row rv" :data-rv-delay="(i % 4) * 0.06">
           <a :href="r.html_url" target="_blank" rel="noopener" class="projects__link">
@@ -47,9 +82,67 @@ import repos from '../data/repos.json'
 </template>
 
 <style scoped>
+/* papers */
+.papers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+}
+
+.paper {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  background: var(--bg);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  transition: background 0.25s var(--ease-out);
+}
+
+.paper:hover {
+  background: var(--bg-raise);
+}
+
+.paper:hover .paper__title {
+  color: var(--accent);
+}
+
+.paper__title {
+  font-weight: 750;
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  transition: color 0.25s var(--ease-out);
+}
+
+.paper__context {
+  text-transform: none;
+  letter-spacing: 0.03em;
+}
+
+.paper__desc {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.98rem;
+}
+
+.paper__links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.group-label {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  margin-bottom: 1.25rem;
+  color: var(--muted);
+}
+
+/* additional projects */
 .projects__list {
   list-style: none;
-  margin-top: clamp(2rem, 5vh, 3.5rem);
   border-top: 1px solid var(--line);
 }
 
@@ -107,53 +200,10 @@ import repos from '../data/repos.json'
   margin-top: 1.5rem;
 }
 
-.featured {
-  display: grid;
-  gap: 1rem;
-  margin-top: clamp(2rem, 5vh, 3.5rem);
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  border: 1px solid var(--line);
-  background:
-    radial-gradient(120% 140% at 0% 0%, rgba(216, 255, 62, 0.06), transparent 55%),
-    var(--bg-raise);
-  transition: border-color 0.3s var(--ease-out);
-}
-
-.featured:hover {
-  border-color: var(--accent);
-}
-
-.featured:hover .featured__title {
-  color: var(--accent);
-}
-
-.featured__tag {
-  color: var(--accent);
-}
-
-.featured__title {
-  font-weight: 750;
-  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  transition: color 0.25s var(--ease-out);
-}
-
-.featured__desc {
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 44rem;
-}
-
-.featured__cta {
-  color: var(--muted);
-}
-
-.featured:hover .featured__cta {
-  color: var(--accent);
-}
-
 @media (max-width: 860px) {
+  .papers {
+    grid-template-columns: 1fr;
+  }
   .projects__link {
     grid-template-columns: 1fr auto;
   }
