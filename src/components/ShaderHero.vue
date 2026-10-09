@@ -8,6 +8,7 @@ const props = defineProps<{ variant: HeroVariantId }>()
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 const fading = ref(false)
+const webglFailed = ref(false)
 
 // World mapping: fixed visible height at z = 0, width follows aspect.
 const WORLD_H = 2.2
@@ -56,11 +57,25 @@ function renderFrame(time: number) {
   renderer.render(scene, camera)
 }
 
+// reduced motion: one composed static frame. Called inside a rAF (twice) so
+// the canvas is actually presented — a synchronous pre-present draw can
+// leave the buffer blank.
+function renderStill() {
+  handle?.update?.(0, 14)
+  renderFrame(14)
+}
+
 onMounted(() => {
   const canvas = canvasEl.value
   if (!canvas) return
 
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' })
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' })
+  } catch {
+    // WebGL unavailable — fall back to a static composed gradient backdrop
+    webglFailed.value = true
+    return
+  }
 
   // lower pixel ratio on small screens — fewer fragments, calmer image
   const dpr = () => Math.min(window.devicePixelRatio, window.innerWidth < 720 ? 1.25 : 1.5)
@@ -82,6 +97,8 @@ onMounted(() => {
     worldSize.set(WORLD_H * camera.aspect, WORLD_H)
     bg.resize(w * dpr(), h * dpr())
     handle?.resize?.(w, h)
+    // resizing clears the drawing buffer — re-present the still frame
+    if (reducedMotion) renderStill()
   }
   resize()
   window.addEventListener('resize', resize)
@@ -109,10 +126,11 @@ onMounted(() => {
     raf = requestAnimationFrame(tick)
   }
 
-  // reduced motion: render a single composed static frame
   if (reducedMotion) {
-    handle?.update?.(0, 14)
-    renderFrame(14)
+    raf = requestAnimationFrame(() => {
+      renderStill()
+      raf = requestAnimationFrame(renderStill)
+    })
   } else {
     tick()
   }
@@ -127,8 +145,7 @@ watch(() => props.variant, (id) => {
   if (!scene) return
   if (reducedMotion) {
     mountVariant(id)
-    handle?.update?.(0, 14)
-    renderFrame(14)
+    renderStill()
     return
   }
   // brief crossfade: dim out, swap variant, fade back in
@@ -155,7 +172,7 @@ onBeforeUnmount(() => {
   <canvas
     ref="canvasEl"
     class="shader-canvas"
-    :class="{ 'shader-canvas--fading': fading }"
+    :class="{ 'shader-canvas--fading': fading, 'shader-canvas--fallback': webglFailed }"
     aria-hidden="true"
   ></canvas>
 </template>
@@ -169,6 +186,15 @@ onBeforeUnmount(() => {
   display: block;
   opacity: 1;
   transition: opacity 0.22s ease;
+}
+
+/* static fallback when WebGL is unavailable: a quiet tonal mass in the
+   upper-right, echoing the artwork's composition */
+.shader-canvas--fallback {
+  background:
+    radial-gradient(58% 42% at 62% 30%, rgba(242, 242, 239, 0.075), rgba(242, 242, 239, 0) 70%),
+    radial-gradient(30% 22% at 68% 26%, rgba(216, 255, 62, 0.035), rgba(216, 255, 62, 0) 70%),
+    #0a0a0b;
 }
 
 .shader-canvas--fading {

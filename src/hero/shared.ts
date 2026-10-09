@@ -281,8 +281,10 @@ export interface VariantHandle {
   dispose(): void
 }
 
+export type HeroVariantId = 'surface' | 'flow' | 'network'
+
 export interface HeroVariantDef {
-  id: 'flow' | 'network'
+  id: HeroVariantId
   label: string
   create(ctx: VariantContext): VariantHandle
 }

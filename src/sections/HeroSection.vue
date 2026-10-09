@@ -5,7 +5,10 @@ import HeroVariantSwitcher from '../components/HeroVariantSwitcher.vue'
 import { DEFAULT_VARIANT, isHeroVariant, type HeroVariantId } from '../hero/registry'
 
 // TEMPORARY — shader exploration switcher; remove once a final direction is chosen.
-const STORAGE_KEY = 'hero-shader-variant'
+// v2 key: earlier visitors stored a preference for the old variants under the
+// v1 key — bumping it lets them land on the new default while the old
+// variants stay available in the switcher.
+const STORAGE_KEY = 'hero-shader-variant-v2'
 
 function readStoredVariant(): HeroVariantId {
   try {

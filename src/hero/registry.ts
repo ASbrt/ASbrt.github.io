@@ -1,15 +1,16 @@
 // Hero variant registry — the single place that lists the switchable
 // hero-background experiments.
 
+import { sculpturalSurface } from './sculpturalSurface'
 import { sculpturalFlow } from './sculpturalFlow'
 import { emergentNetwork } from './emergentNetwork'
-import type { HeroVariantDef } from './shared'
+import type { HeroVariantDef, HeroVariantId } from './shared'
 
-export type HeroVariantId = 'flow' | 'network'
+export type { HeroVariantId }
 
-export const HERO_VARIANTS: HeroVariantDef[] = [sculpturalFlow, emergentNetwork]
+export const HERO_VARIANTS: HeroVariantDef[] = [sculpturalSurface, sculpturalFlow, emergentNetwork]
 
-export const DEFAULT_VARIANT: HeroVariantId = 'flow'
+export const DEFAULT_VARIANT: HeroVariantId = 'surface'
 
 export function isHeroVariant(value: unknown): value is HeroVariantId {
   return HERO_VARIANTS.some((v) => v.id === value)
