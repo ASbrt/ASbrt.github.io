@@ -1,10 +1,35 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import ShaderHero from '../components/ShaderHero.vue'
+import HeroVariantSwitcher from '../components/HeroVariantSwitcher.vue'
+import { DEFAULT_VARIANT, isHeroVariant, type HeroVariantId } from '../shaders/hero'
+
+// TEMPORARY — shader exploration switcher; remove once a final direction is chosen.
+const STORAGE_KEY = 'hero-shader-variant'
+
+function readStoredVariant(): HeroVariantId {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    return isHeroVariant(stored) ? stored : DEFAULT_VARIANT
+  } catch {
+    return DEFAULT_VARIANT
+  }
+}
+
+const variant = ref<HeroVariantId>(readStoredVariant())
+
+watch(variant, (v) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, v)
+  } catch {
+    // private mode etc. — switching still works, just not persisted
+  }
+})
 </script>
 
 <template>
   <section class="hero">
-    <ShaderHero />
+    <ShaderHero :variant="variant" />
     <div class="hero__content">
       <h1 class="display-xl">
         <span class="rv" data-rv-delay="0.05">Aaron</span>
@@ -20,6 +45,9 @@ import ShaderHero from '../components/ShaderHero.vue'
           <a class="btn btn--solid" href="#projects">View Projects</a>
           <a class="btn" href="#about">About Me</a>
         </div>
+      </div>
+      <div class="hero__switcher">
+        <HeroVariantSwitcher v-model="variant" />
       </div>
     </div>
   </section>
@@ -85,6 +113,13 @@ import ShaderHero from '../components/ShaderHero.vue'
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+/* temporary shader-variant switcher — understated, lower-right edge */
+.hero__switcher {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
 }
 
 </style>
