@@ -10,7 +10,8 @@
             Simulating Systemic Shifts
           </h3>
           <p class="mono work__context">
-            Bachelor's thesis · University of Hamburg · 2025
+            Bachelor's thesis · Social Economics · University of Hamburg ·
+            2025
           </p>
           <p class="work__desc">
             Developed a prototype stock-flow-consistent agent-based
@@ -31,8 +32,8 @@
             Satellite Imagery
           </h3>
           <p class="mono work__context">
-            Course project, Deep Learning for Social Scientists · M.Sc. SEDS,
-            University of Konstanz
+            Course project · Deep Learning for Social Scientists · University
+            of Konstanz · 2026
           </p>
           <p class="work__desc">
             Predicting annual PM2.5 concentrations from monitoring stations,
@@ -42,13 +43,7 @@
           </p>
           <div class="mono work__links">
             <a class="ulink" href="https://github.com/simone-mazzoli/air_pollution" target="_blank" rel="noopener">Repository ↗</a>
-            <a
-              class="ulink"
-              href="https://github.com/simone-mazzoli/air_pollution/blob/main/Air_pollution_report/build/main_merged.pdf"
-              target="_blank"
-              rel="noopener"
-              >Paper (PDF) ↗</a
-            >
+            <a class="ulink" href="/papers/air-pollution-report.pdf" target="_blank" rel="noopener">Paper (PDF) ↗</a>
           </div>
         </article>
 
@@ -57,8 +52,8 @@
             Institutional Coordination under Interdependence
           </h3>
           <p class="mono work__context">
-            Final paper, Dynamic Social Behavior seminar · University of
-            Konstanz
+            Seminar paper · Dynamic Social Behavior · University of Konstanz ·
+            2026
           </p>
           <p class="work__desc">
             An agent-based simulation of how exchange protocols interact with
@@ -67,13 +62,7 @@
           </p>
           <div class="mono work__links">
             <a class="ulink" href="https://github.com/ASbrt/competition-under-interdependence" target="_blank" rel="noopener">Repository ↗</a>
-            <a
-              class="ulink"
-              href="https://github.com/ASbrt/competition-under-interdependence/blob/main/submission/FinalPaper.pdf"
-              target="_blank"
-              rel="noopener"
-              >Paper (PDF) ↗</a
-            >
+            <a class="ulink" href="/papers/institutional-coordination.pdf" target="_blank" rel="noopener">Paper (PDF) ↗</a>
           </div>
         </article>
       </div>
@@ -103,7 +92,7 @@
   font-size: clamp(1.35rem, 2.4vw, 2rem);
   line-height: 1.2;
   letter-spacing: -0.01em;
-  max-width: 44rem;
+  max-width: 58rem;
   transition: color 0.25s var(--ease-out);
 }
 
@@ -121,7 +110,7 @@
   color: var(--muted);
   line-height: 1.65;
   font-size: 1.02rem;
-  max-width: 44rem;
+  max-width: 62rem;
 }
 
 .work__links {
