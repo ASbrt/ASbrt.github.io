@@ -137,7 +137,13 @@ onMounted(() => {
     renderer!.render(scene, camera)
     raf = requestAnimationFrame(tick)
   }
-  tick()
+
+  // reduced motion: render a single static frame instead of animating
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    renderer.render(scene, camera)
+  } else {
+    tick()
+  }
 
   cleanup = () => {
     window.removeEventListener('resize', resize)

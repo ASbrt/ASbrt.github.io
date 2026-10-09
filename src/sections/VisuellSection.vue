@@ -1,227 +1,125 @@
 <template>
   <section id="visuell" class="section section--visuell">
-    <div class="visuell__word" aria-hidden="true" data-parallax="0.08">VISUELL</div>
-
     <div class="container">
       <div class="visuell__grid">
+        <figure class="visuell__media rv" data-parallax="0.05">
+          <img
+            src="../assets/visuell-app.jpg"
+            alt="The visuell app: layered video engine, scenes, and step sequencer in the browser"
+            loading="lazy"
+          />
+          <figcaption class="mono">
+            The visuell engine in the browser: layers, scenes, and a step
+            sequencer
+          </figcaption>
+        </figure>
+
         <div class="visuell__copy">
-          <h2 class="display-lg rv">
-            A groovebox that treats video like
-            <span class="accent">samples</span>.
-          </h2>
-          <p class="rv">
-            Visuell is a browser-based video instrument for live visuals.
-            Sample clips on a filmstrip, sequence scenes, and perform live
-            with MIDI, WebGL effects, and a recordable master output. No
-            install, runs in the browser.
+          <h2 class="display-lg rv">visuell<span class="accent">.</span></h2>
+          <p class="visuell__sub display-lg rv" data-rv-delay="0.05">
+            A video instrument for live visuals.
           </p>
-
-          <ol class="visuell__steps">
-            <li class="rv">
-              <span class="mono">01</span>
-              <strong>Sample</strong>
-              <span>Grab clips and trim them on a filmstrip.</span>
-            </li>
-            <li class="rv">
-              <span class="mono">02</span>
-              <strong>Sequence</strong>
-              <span>Arrange scenes and morph between them.</span>
-            </li>
-            <li class="rv">
-              <span class="mono">03</span>
-              <strong>Perform</strong>
-              <span>Play pads live with MIDI, effects, and recording.</span>
-            </li>
-          </ol>
-
-          <a class="btn btn--solid rv" href="https://www.visuell.art/" target="_blank" rel="noopener">
-            Open visuell.art ↗
+          <p class="visuell__body rv" data-rv-delay="0.1">
+            Visuell grew out of making music and wanting VJ tools that work
+            more like instruments. It's a browser-based video-sampling
+            groovebox for chopping, sequencing, and performing with moving
+            images.
+          </p>
+          <p class="mono visuell__award rv" data-rv-delay="0.15">
+            Music Worx Development Award 2024
+          </p>
+          <a
+            class="btn btn--solid rv"
+            data-rv-delay="0.2"
+            href="https://www.visuell.art/"
+            target="_blank"
+            rel="noopener"
+          >
+            Explore visuell ↗
           </a>
         </div>
-
-        <div class="visuell__demo rv" data-rv-delay="0.1">
-          <VisuellShader />
-          <p class="mono visuell__demo-caption">
-            Live in your browser: three generators from the visuell shader
-            catalog, parameters and all.
-          </p>
-        </div>
-      </div>
-
-      <div class="visuell__facts">
-        <ul class="visuell__feats mono">
-          <li class="rv">Live video inputs</li>
-          <li class="rv">MIDI mapping + clock sync</li>
-          <li class="rv">WebGL effects + procedural generators</li>
-          <li class="rv">Master-output recording</li>
-        </ul>
-
-        <ul class="visuell__specs mono">
-          <li class="rv"><span>Recognition</span><span>Development Award Music Worx 2024</span></li>
-          <li class="rv"><span>Status</span><span>In development</span></li>
-        </ul>
       </div>
     </div>
   </section>
 </template>
 
-<script setup lang="ts">
-import VisuellShader from '../components/VisuellShader.vue'
-</script>
-
 <style scoped>
-/* visuell's own brand accent takes over inside this section */
+/* visuell's own brand accent, used sparingly inside this section */
 .section--visuell {
   --accent: #f2ca00;
   background: var(--bg-raise);
   border-block: 1px solid var(--line);
-  overflow: hidden;
-}
-
-/* giant outlined wordmark bleeding off the left edge */
-.visuell__word {
-  font-weight: 800;
-  font-size: clamp(5rem, 17vw, 17rem);
-  line-height: 0.85;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--line);
-  user-select: none;
-  margin-bottom: clamp(2rem, 6vh, 4rem);
-  transform: translateX(-0.05em);
 }
 
 .visuell__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: clamp(2rem, 6vw, 5rem);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
   align-items: center;
 }
 
-.visuell__copy {
-  display: grid;
-  gap: 1.75rem;
-  justify-items: start;
-}
-
-.visuell__copy > p {
-  color: var(--muted);
-  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
-  line-height: 1.65;
-  max-width: 32rem;
-}
-
-/* how it works */
-.visuell__steps {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line);
+/* media */
+.visuell__media {
+  position: relative;
   border: 1px solid var(--line);
-  width: 100%;
-}
-
-.visuell__steps li {
-  display: grid;
-  gap: 0.5rem;
-  align-content: start;
-  background: var(--bg-raise);
-  padding: 1.1rem 1.25rem;
-  transition: background 0.25s var(--ease-out);
-}
-
-.visuell__steps li:hover {
+  overflow: hidden;
   background: var(--bg);
 }
 
-.visuell__steps li:hover .mono {
-  color: var(--accent);
+.visuell__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.8s var(--ease-out);
 }
 
-.visuell__steps strong {
-  font-size: 1.05rem;
+.visuell__media:hover img {
+  transform: scale(1.015);
 }
 
-.visuell__steps li > span:last-child {
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-/* demo */
-.visuell__demo {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.visuell__demo-caption {
-  color: var(--muted);
-  line-height: 1.6;
+.visuell__media figcaption {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.9rem;
+  max-width: calc(100% - 2rem);
+  padding: 0.35rem 0.65rem;
+  background: rgba(10, 10, 11, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   text-transform: none;
   letter-spacing: 0.03em;
 }
 
-/* facts row */
-.visuell__facts {
+/* copy */
+.visuell__copy {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: clamp(2rem, 6vw, 5rem);
-  margin-top: clamp(3rem, 7vh, 5rem);
-  align-items: start;
+  gap: 1.4rem;
+  justify-items: start;
 }
 
-.visuell__feats {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.visuell__feats li {
-  border: 1px solid var(--line);
-  padding: 0.45rem 0.85rem;
+.visuell__sub {
+  font-weight: 650;
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+  line-height: 1.2;
   text-transform: none;
-  letter-spacing: 0.03em;
+  letter-spacing: -0.01em;
   color: var(--muted);
-  transition:
-    border-color 0.25s var(--ease-out),
-    color 0.25s var(--ease-out);
+  margin-top: -0.5rem;
 }
 
-.visuell__feats li:hover {
-  border-color: var(--accent);
+.visuell__body {
+  color: var(--muted);
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  line-height: 1.65;
+  max-width: 30rem;
+}
+
+.visuell__award {
   color: var(--accent);
-}
-
-.visuell__specs {
-  list-style: none;
-  border-top: 1px solid var(--line);
-}
-
-.visuell__specs li {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.8rem 0;
-  border-bottom: 1px solid var(--line);
-  letter-spacing: 0.02em;
-  text-transform: none;
-}
-
-.visuell__specs li span:last-child {
-  color: var(--ink);
-  text-align: right;
 }
 
 @media (max-width: 860px) {
-  .visuell__grid,
-  .visuell__facts {
-    grid-template-columns: 1fr;
-  }
-  .visuell__steps {
+  .visuell__grid {
     grid-template-columns: 1fr;
   }
 }

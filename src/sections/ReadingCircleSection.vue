@@ -38,9 +38,12 @@
           </div>
 
           <div class="rc__cta rv">
-            <!-- TODO(cloudflare): point at R2 public bucket or a Worker-powered
-                 mailing-list endpoint once MCP tools are available. -->
-            <a class="btn" href="#top" @click.prevent>Join the mailing list · coming soon</a>
+            <a
+              class="btn"
+              href="mailto:aaronsiebert@protonmail.com?subject=Reading%20circle%3A%20Money%2C%20the%20State%20and%20the%20Economy"
+            >
+              Get in touch to join
+            </a>
           </div>
         </div>
       </div>

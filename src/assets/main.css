@@ -95,6 +95,21 @@ a {
   position: relative;
 }
 
+/* —— reduced motion —— */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rv {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* —— display type —— */
 .rv {
   opacity: 0;

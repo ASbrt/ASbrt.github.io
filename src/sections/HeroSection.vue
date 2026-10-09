@@ -12,9 +12,9 @@ import ShaderHero from '../components/ShaderHero.vue'
       </h1>
       <div class="hero__meta rv" data-rv-delay="0.3">
         <p class="hero__tag">
-          Data scientist in training, economist by foundation, building
-          <a class="ulink accent" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell</a>,
-          a video-sampling groovebox for live visuals.
+          I work with data and computational models to understand economic and
+          social systems. I also build software, instruments, and things for
+          the web.
         </p>
         <div class="hero__cta">
           <a class="btn btn--solid" href="#projects">View Projects</a>
@@ -74,10 +74,10 @@ import ShaderHero from '../components/ShaderHero.vue'
 }
 
 .hero__tag {
-  max-width: 34rem;
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
-  line-height: 1.55;
-  color: #d9d9d4;
+  max-width: 42rem;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.5;
+  color: #e2e2dd;
   text-shadow: 0 1px 12px rgba(10, 10, 11, 0.6);
 }
 

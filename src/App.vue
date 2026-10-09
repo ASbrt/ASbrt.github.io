@@ -14,6 +14,8 @@ import SiteFooter from './components/SiteFooter.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 let lenis: Lenis | null = null
 
 // smooth-scroll all in-page anchor links instead of jumping
@@ -29,6 +31,8 @@ const onAnchorClick = (e: MouseEvent) => {
 }
 
 onMounted(() => {
+  if (reducedMotion) return // .rv elements are shown via CSS; native scroll & no parallax
+
   // inertia scroll driving ScrollTrigger
   lenis = new Lenis({ lerp: 0.09 })
   lenis.on('scroll', ScrollTrigger.update)

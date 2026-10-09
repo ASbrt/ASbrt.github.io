@@ -561,7 +561,14 @@ onMounted(() => {
     mat.uniforms.u_frame.value = frame
     renderer!.render(scene, camera)
   }
-  tick()
+
+  // reduced motion: render one static frame instead of animating
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    materials[0].uniforms.u_time.value = 4
+    renderer.render(scene, camera)
+  } else {
+    tick()
+  }
 })
 
 onBeforeUnmount(() => {
