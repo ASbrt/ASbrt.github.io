@@ -10,7 +10,7 @@
           <p class="rv">
             A critical reading circle at my university. We read classic and
             contemporary texts on where money comes from, what states do with
-            it, and how the monetary system shapes the economy. From commodity
+            it and how the monetary system shapes the economy. From commodity
             theories to modern monetary theory and beyond.
           </p>
           <p class="rv">

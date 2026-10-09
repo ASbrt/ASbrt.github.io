@@ -9,8 +9,8 @@
         <div class="about__body">
           <p class="rv">
             I'm a master's student in Social and Economic Data Science at the
-            University of Konstanz, where I also work as a research assistant
-            in the
+            University of Konstanz, where I also work as a student research
+            assistant in the
             <a
               class="ulink"
               href="https://www.polver.uni-konstanz.de/research-group-international-politics-and-conflict/"
@@ -18,36 +18,42 @@
               rel="noopener"
               >International Politics and Conflict Research</a
             >
-            group of Prof. Nina von Uexkull. My current work involves
+            group of Prof. Nina von Uexkull. Much of my current work involves
             geospatial data processing and building data pipelines for
             research on natural disasters and conflict. I also tutor
             introductory computing for social science students. Before moving
-            to Konstanz, I studied Social Economics with a focus on Economics
-            at the University of Hamburg, where I also tutored empirical
-            methods, econometrics, and regression analysis.
+            to Konstanz, I studied Social Economics with a focus on economics
+            at the University of Hamburg, where I tutored empirical methods,
+            econometrics and regression analysis.
           </p>
           <p class="rv">
-            My interests span economics, computational social science, and
-            machine learning. I'm particularly interested in macroeconomics,
-            environmental economics, and how economic and political systems
-            shape the world around us. For my bachelor's thesis, I explored
-            economic and environmental dynamics through
-            <strong>stock-flow-consistent agent-based modeling</strong>. This
-            interest in understanding economic systems also motivates a
+            I'm particularly interested in macroeconomics, environmental
+            economics and how institutions and policy shape the economy. For
+            my bachelor's thesis, I developed a
+            <strong>stock-flow-consistent agent-based macroeconomic model</strong>
+            connecting production, finance, energy use and emissions, with the
+            aim of exploring different approaches to economic and environmental
+            policy. These interests also motivate a
             <a class="ulink" href="#reading-circle">reading circle</a> I'm
-            organizing on money, the state, and the economy. On the
-            computational side, I've increasingly been drawn toward machine
-            learning, complex systems, and the behavior and coordination of
+            organizing on money, the state and the economy. Alongside
+            economics, I've become increasingly interested in machine learning
+            and complex systems, particularly the behavior and coordination of
             interacting AI agents.
           </p>
           <p class="rv">
             Away from research I build things. My current project is
             <a class="ulink" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell</a>,
-            a video-sampling groovebox for live visuals and a 2024 Music Worx
-            Development Award winner, born from making music and wanting VJ
-            tools that work more like instruments. I also enjoy designing and
-            building websites and interactive applications, including this
-            one.
+            a video-sampling groovebox for live visuals and a
+            <a
+              class="ulink"
+              href="https://kreativgesellschaft.org/en/press/pressemitteilungen/music-worx-gruenderpreis-2024-innovationen-die-verbinden-gewinnerteams-ausgezeichnet/"
+              target="_blank"
+              rel="noopener"
+              >2024 Music Worx Development Award</a
+            >
+            winner. It grew out of making music and wanting VJ tools that work
+            more like instruments. I also enjoy designing and building websites
+            and interactive applications, including this one.
           </p>
         </div>
       </div>

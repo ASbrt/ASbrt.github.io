@@ -5,11 +5,11 @@
         <figure class="visuell__media rv" data-parallax="0.05">
           <img
             src="../assets/visuell-app.jpg"
-            alt="The visuell app: layered video engine, scenes, and step sequencer in the browser"
+            alt="The visuell app: layered video engine, scenes and step sequencer in the browser"
             loading="lazy"
           />
           <figcaption class="mono">
-            The visuell engine in the browser: layers, scenes, and a step
+            The visuell engine in the browser: layers, scenes and a step
             sequencer
           </figcaption>
         </figure>
@@ -22,7 +22,7 @@
           <p class="visuell__body rv" data-rv-delay="0.1">
             Visuell grew out of making music and wanting VJ tools that work
             more like instruments. It's a browser-based video-sampling
-            groovebox for chopping, sequencing, and performing with moving
+            groovebox for chopping, sequencing and performing with moving
             images.
           </p>
           <p class="mono visuell__award rv" data-rv-delay="0.15">

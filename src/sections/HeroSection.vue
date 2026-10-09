@@ -12,9 +12,9 @@ import ShaderHero from '../components/ShaderHero.vue'
       </h1>
       <div class="hero__meta rv" data-rv-delay="0.3">
         <p class="hero__tag">
-          I work with data and computational models to understand economic and
-          social systems. I also build software, instruments, and things for
-          the web.
+          My work moves between economics, data science and computational
+          modeling. Away from research, I build creative software and things
+          for the web.
         </p>
         <div class="hero__cta">
           <a class="btn btn--solid" href="#projects">View Projects</a>

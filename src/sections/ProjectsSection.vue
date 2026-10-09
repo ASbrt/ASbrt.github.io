@@ -19,9 +19,9 @@ import repos from '../data/repos.json'
           </p>
           <p class="paper__desc">
             Predicting annual PM2.5 concentrations from monitoring stations,
-            satellite, and context data, with geographic cross-validation and
+            satellite and context data, with geographic cross-validation and
             Kreis-level socioeconomic analysis. With Lisanne Dolleman, David
-            Marasek, and Simone Mazzoli.
+            Marasek and Simone Mazzoli.
           </p>
           <div class="mono paper__links">
             <a class="ulink" href="https://github.com/simone-mazzoli/air_pollution" target="_blank" rel="noopener">Repository ↗</a>
