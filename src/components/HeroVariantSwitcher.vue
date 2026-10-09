@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HERO_VARIANTS, type HeroVariantId } from '../shaders/hero'
+import { HERO_VARIANTS, type HeroVariantId } from '../hero/registry'
 
 // Temporary shader-variant switcher for hero background comparison.
 // v-model:HeroVariantId — the parent owns the state and persists it.

@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 import ShaderHero from '../components/ShaderHero.vue'
 import HeroVariantSwitcher from '../components/HeroVariantSwitcher.vue'
-import { DEFAULT_VARIANT, isHeroVariant, type HeroVariantId } from '../shaders/hero'
+import { DEFAULT_VARIANT, isHeroVariant, type HeroVariantId } from '../hero/registry'
 
 // TEMPORARY — shader exploration switcher; remove once a final direction is chosen.
 const STORAGE_KEY = 'hero-shader-variant'
@@ -37,9 +37,7 @@ watch(variant, (v) => {
       </h1>
       <div class="hero__meta rv" data-rv-delay="0.3">
         <p class="hero__tag">
-          My work moves between economics, data science and computational
-          modeling. Away from research, I build creative software and things
-          for the web.
+          My work moves between economics, data science and computational modeling. I also build creative software and design for the web.
         </p>
         <div class="hero__cta">
           <a class="btn btn--solid" href="#projects">View Projects</a>

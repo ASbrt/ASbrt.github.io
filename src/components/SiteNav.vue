@@ -69,18 +69,18 @@ watch(open, (v) => {
 
 .nav__logo {
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   font-weight: 700;
 }
 
 .nav__links {
   display: flex;
-  gap: clamp(1rem, 2.5vw, 2.25rem);
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
 }
 
 .nav__link {
   color: #fff;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 }
 
 .nav__burger {
