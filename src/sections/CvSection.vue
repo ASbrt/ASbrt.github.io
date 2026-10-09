@@ -19,7 +19,7 @@
                     <a class="ulink" href="https://www.polver.uni-konstanz.de/research-group-international-politics-and-conflict/" target="_blank" rel="noopener">
                       Research Group International Politics and Conflict Research
                     </a>
-                    (Prof. Nina von Uexkull), University of Konstanz
+                    (Prof. Dr. Nina von Uexkull), University of Konstanz
                   </span>
                 </div>
               </li>

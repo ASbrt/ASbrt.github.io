@@ -18,7 +18,7 @@
               rel="noopener"
               >International Politics and Conflict Research</a
             >
-            group of Prof. Nina von Uexkull. Much of my current work involves
+            group of Prof. Dr. Nina von Uexkull. Much of my current work involves
             geospatial data processing and building data pipelines for
             research on natural disasters and conflict. I also tutor
             introductory computing for social science students. Before moving
@@ -29,9 +29,9 @@
           <p class="rv">
             I'm particularly interested in macroeconomics, environmental
             economics and how institutions and policy shape the economy. For
-            my bachelor's thesis, I developed a
-            <strong>stock-flow-consistent agent-based macroeconomic model</strong>
-            connecting production, finance, energy use and emissions, with the
+            my bachelor's thesis, I developed a stock-flow-consistent
+            agent-based macroeconomic model connecting production, finance,
+            energy use and emissions, with the
             aim of exploring different approaches to economic and environmental
             policy. These interests also motivate a
             <a class="ulink" href="#reading-circle">reading circle</a> I'm

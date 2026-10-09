@@ -74,7 +74,7 @@ import ShaderHero from '../components/ShaderHero.vue'
 }
 
 .hero__tag {
-  max-width: 42rem;
+  max-width: 56rem;
   font-size: clamp(1.15rem, 2vw, 1.55rem);
   line-height: 1.5;
   color: #e2e2dd;
