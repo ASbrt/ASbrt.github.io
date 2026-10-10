@@ -1,184 +1,82 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import {
-  CONTROLS, DEFAULT_SCULPTURE, FOLD_CONTROLS, SPINE_CONTROLS, MAX_FOLDS,
-  type ControlGroup, type NumericKey, type FoldControl, type Vec3Control, type SculptureConfig,
-} from '../hero/sculpture/config'
+import { computed,ref } from 'vue'
+import { DEFAULT_SCULPTURE, copyConfig, MAX_RIBBONS, MAX_FOLDS, MAX_ACCENTS, POINTS } from '../hero/sculpture/config'
 import { sculptureSettings as settings, setSettings, resetSettings } from '../hero/sculpture/state'
-
-const groups: ControlGroup[] = ['Shape','Lines','Fragmentation','Accent','Motion','Desktop framing','Mobile framing']
-const open = ref(true)
-const importOpen = ref(false)
-const importText = ref('')
-const status = ref('')
-const comparison = ref(false)
-let held: SculptureConfig | null = null
-const PRESETS_KEY='asbrt-sculpture-presets-v2'
-interface Preset { name: string; config:SculptureConfig }
-const presets=ref<Preset[]>(readPresets())
-const presetName=ref('Macro fold 01')
-function readPresets():Preset[]{
-  try{
-    const raw=localStorage.getItem(PRESETS_KEY)
-    const data:unknown=raw?JSON.parse(raw):[]
-    if(!Array.isArray(data))return []
-    return data.slice(0,12).filter((x):x is Preset=>!!x&&typeof x==='object'&&typeof x.name==='string'&&'config' in x)
-  }catch{return []}
+const open=ref(true),active=ref(0),advanced=ref(false),importOpen=ref(false),importText=ref(''),status=ref('')
+const ribbon=computed(()=>settings.ribbons[Math.min(active.value,settings.ribbons.length-1)])
+const num=(e:Event,obj:object,key:string)=>{(obj as Record<string,number>)[key]=Number((e.target as HTMLInputElement).value)}
+const format=(n:number)=>Number(n).toFixed(2)
+const shapeControls=[{key:'width',label:'Width',min:.05,max:1.5,step:.005},{key:'cup',label:'Cross-section cup',min:-1.5,max:1.5,step:.01},{key:'baseTwist',label:'Global twist',min:-4,max:4,step:.01},{key:'contours',label:'Contours (rebuilds topology)',min:12,max:220,step:1},{key:'opacity',label:'Opacity',min:0,max:1,step:.01},{key:'brightness',label:'Brightness',min:0,max:3,step:.01}] as const
+const foldControls=[{key:'u',label:'Along spine',min:0,max:1,step:.005},{key:'radius',label:'Influence radius',min:.025,max:.45,step:.005},{key:'twist',label:'Twist',min:-5,max:5,step:.01},{key:'pinch',label:'Pinch',min:-.9,max:.95,step:.01},{key:'lift',label:'Depth lift',min:-2,max:2,step:.01},{key:'curl',label:'Cross-section curl',min:-2,max:2,step:.01}] as const
+const accentControls=[{key:'u',label:'Along contour',min:0,max:1,step:.005},{key:'v',label:'Across ribbon',min:-1,max:1,step:.005},{key:'length',label:'Length / U spread',min:.01,max:.5,step:.005},{key:'spread',label:'Spread / V',min:.01,max:1,step:.005},{key:'strength',label:'Strength',min:0,max:2,step:.01}] as const
+const frameControls=[{key:'zoom',label:'Macro zoom',min:.2,max:5,step:.01},{key:'x',label:'Horizontal position',min:-1,max:2,step:.01},{key:'y',label:'Vertical position',min:-1,max:2,step:.01},{key:'rx',label:'Rotation X',min:-180,max:180,step:.5},{key:'ry',label:'Rotation Y',min:-180,max:180,step:.5},{key:'rz',label:'Rotation Z',min:-180,max:180,step:.5}] as const
+const lookControls=[{key:'depthFade',label:'Depth fading',min:0,max:3,step:.01},{key:'accentIntensity',label:'Global lime intensity',min:0,max:2,step:.01},{key:'fragmentation',label:'Line break frequency',min:0,max:1,step:.01},{key:'fragmentScale',label:'Break density along line',min:1,max:40,step:.25},{key:'fragmentationSoftness',label:'Break edge softness',min:.0005,max:.07,step:.0005}] as const
+const motionControls=[{key:'speed',label:'Shadow travel speed',min:0,max:2,step:.005},{key:'shadowStrength',label:'Shadow darkness',min:0,max:1,step:.01},{key:'shadowWidth',label:'Shadow patch size',min:.005,max:.45,step:.005},{key:'shadowRepeats',label:'Patches per line',min:0,max:8,step:.05},{key:'shadowSlant',label:'Phase across lines',min:-2,max:2,step:.01},{key:'lineFade',label:'Slow whole-line fading',min:0,max:1,step:.01},{key:'rotationX',label:'Rotation drift X °',min:0,max:40,step:.1},{key:'rotationY',label:'Rotation drift Y °',min:0,max:40,step:.1},{key:'phase',label:'Frozen phase / seconds',min:0,max:100,step:.1}] as const
+function addRibbon(){
+  if(settings.ribbons.length>=MAX_RIBBONS)return
+  const r=copyConfig({ ...DEFAULT_SCULPTURE,ribbons:[ribbon.value]}).ribbons[0]
+  r.name=`Ribbon ${settings.ribbons.length+1}`;r.offset.z-=.3;r.offset.x+=.15;r.opacity=.55
+  settings.ribbons.push(r);active.value=settings.ribbons.length-1
 }
-function storePresets(){try{localStorage.setItem(PRESETS_KEY,JSON.stringify(presets.value))}catch{status.value='Preset storage unavailable'}}
-function savePreset(){
-  const name=presetName.value.trim().slice(0,48)||`Preset ${presets.value.length+1}`
-  const copy=JSON.parse(JSON.stringify(settings)) as SculptureConfig
-  presets.value=[...presets.value.filter(x=>x.name!==name),{name,config:copy}].slice(-12)
-  storePresets();status.value=`Saved ${name}`
-}
-function loadPreset(i:number){if(presets.value[i]){setSettings(presets.value[i].config);comparison.value=false;status.value=`Loaded ${presets.value[i].name}`}}
-function deletePreset(i:number){presets.value.splice(i,1);storePresets()}
-function changed(){comparison.value=false;held=null}
-function onValue(e:Event,key:NumericKey){settings[key]=Number((e.target as HTMLInputElement).value);changed()}
-function onFold(e:Event,i:number,key:keyof FoldControl){
-  const f=settings.folds[i];if(f)f[key]=Number((e.target as HTMLInputElement).value)
-  changed()
-}
-function onSpine(e:Event,i:number,key:keyof Vec3Control){
-  const p=settings.spinePoints[i];if(p)p[key]=Number((e.target as HTMLInputElement).value)
-  changed()
-}
-function addFold(){if(settings.folds.length>=MAX_FOLDS)return
-  settings.folds.push({u:.48,width:.12,strength:1,twist:1.4,pinch:.35,depthLift:.16,curl:.45,accentBias:.3})
-  changed()
-}
-function removeFold(i:number){settings.folds.splice(i,1);changed()}
-function format(value:number,step:number){return step===1?value.toFixed(0):step<.01?value.toFixed(3):value.toFixed(2)}
-async function copyJSON(){
-  const json=JSON.stringify(settings,null,2)
-  try{await navigator.clipboard.writeText(json);status.value='Configuration copied as JSON'}
-  catch{importOpen.value=true;importText.value=json;status.value='Select and copy the JSON below'}
-}
-function importJSON(){
-  try{
-    const parsed:unknown=JSON.parse(importText.value)
-    if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))throw new Error('Expected object')
-    setSettings(parsed);comparison.value=false;importOpen.value=false;status.value='Configuration imported (validated)'
-  }catch{status.value='Invalid JSON: expected a settings object'}
-}
-function compare(){
-  if(!comparison.value){held=JSON.parse(JSON.stringify(settings)) as SculptureConfig;setSettings(DEFAULT_SCULPTURE);comparison.value=true}
-  else{if(held)setSettings(held);held=null;comparison.value=false}
-}
-function reset(){resetSettings();comparison.value=false;held=null;status.value='Reset to defaults'}
+function removeRibbon(){if(settings.ribbons.length<2)return;settings.ribbons.splice(active.value,1);active.value=Math.min(active.value,settings.ribbons.length-1)}
+function addFold(){if(ribbon.value.folds.length<MAX_FOLDS)ribbon.value.folds.push({u:.5,radius:.13,twist:1.2,pinch:.3,lift:.1,curl:.25})}
+function addAccent(){if(ribbon.value.accents.length<MAX_ACCENTS)ribbon.value.accents.push({u:.5,v:.4,length:.15,spread:.2,strength:1})}
+function reset(){resetSettings();active.value=0;status.value='Reset to published defaults'}
+async function exportJSON(){const value=JSON.stringify(settings,null,2);try{await navigator.clipboard.writeText(value);status.value='Configuration copied'}catch{importText.value=value;importOpen.value=true;status.value='Copy JSON below'}}
+function importJSON(){try{setSettings(JSON.parse(importText.value));active.value=0;importOpen.value=false;status.value='Imported and validated'}catch{status.value='Invalid JSON'}}
+const PRESET_KEY='asbrt-v3-presets'
+const presetName=ref('Untitled composition')
+const presets=ref<{name:string;json:string}[]>(readPresets())
+function readPresets(){try{const v=JSON.parse(localStorage.getItem(PRESET_KEY)||'[]');return Array.isArray(v)?v.slice(0,12):[]}catch{return []}}
+function savePreset(){const name=presetName.value.trim()||'Untitled';presets.value=[...presets.value.filter(p=>p.name!==name),{name,json:JSON.stringify(settings)}].slice(-12);try{localStorage.setItem(PRESET_KEY,JSON.stringify(presets.value));status.value=`Saved ${name}`}catch{status.value='Preset storage unavailable: use Copy JSON'}}
+function loadPreset(i:number){const x=presets.value[i];if(x){setSettings(JSON.parse(x.json));active.value=0}}
 </script>
-
 <template>
-  <aside class="sculpture-panel" aria-label="Live sculpture tuning panel">
-    <header class="panel-top">
-      <strong>SCULPTURE / LAB V2</strong>
-      <button type="button" @click="open = !open" :aria-expanded="open">{{ open?'Collapse −':'Open +' }}</button>
-    </header>
-    <div v-if="open" class="panel-body" data-lenis-prevent>
-      <p class="hint">The sculpture is editable. Zoom into folds, then sculpt the fold fields and spine. Only your browser is affected.</p>
-      <div class="actions">
-        <button type="button" @click="copyJSON">Copy JSON</button>
-        <button type="button" @click="compare">{{ comparison?'Restore edits':'Compare default' }}</button>
-        <button type="button" @click="reset">Reset</button>
-        <button type="button" @click="importOpen = !importOpen">Import JSON</button>
-      </div>
-      <div v-if="importOpen" class="import-box">
-        <textarea v-model="importText" rows="5" aria-label="Paste sculpture configuration JSON" placeholder="Paste exported JSON"></textarea>
-        <button type="button" @click="importJSON">Apply imported settings</button>
-      </div>
-      <details open><summary>Saved local presets</summary>
-        <div class="group-body">
-          <div class="preset-entry"><input v-model="presetName" aria-label="Preset name" maxlength="48" /><button type="button" @click="savePreset">Save view</button></div>
-          <div class="preset-entry" v-for="(preset,i) in presets" :key="preset.name">
-            <span class="preset-name">{{ preset.name }}</span>
-            <button type="button" @click="loadPreset(i)">Load</button>
-            <button type="button" @click="deletePreset(i)" :aria-label="`Delete ${preset.name}`">×</button>
-          </div>
-          <p class="hint">Presets are saved to this browser. Copy JSON to share or publish one.</p>
-        </div>
-      </details>
-      <details v-for="(group,i) in groups" :key="group" :open="i===0||undefined">
-        <summary>{{ group }}</summary>
-        <div class="group-body">
-          <template v-if="group==='Accent'">
-            <label class="toggle"><input type="checkbox" v-model="settings.accentEnabled" /> Accent enabled</label>
-            <label class="select-label">Placement mode
-              <select v-model="settings.accentMode"><option value="fold">Strongest fold</option><option value="ridge">Crest ridge</option><option value="manual">Manual placement</option></select>
-            </label>
-          </template>
-          <template v-if="group==='Motion'">
-            <label class="select-label">Movement mode
-              <select v-model="settings.motionMode"><option value="off">Off</option><option value="breathe">Breathe</option><option value="rotate">Rotate</option><option value="both">Both</option></select>
-            </label>
-            <label class="toggle"><input type="checkbox" v-model="settings.motionPaused" /> Freeze animation / preview phase</label>
-          </template>
-          <label v-for="spec in CONTROLS.filter(c=>c.group===group)" :key="spec.key" class="control">
-            <span class="control-header"><span>{{ spec.label }}</span><output>{{ format(settings[spec.key],spec.step) }}</output></span>
-            <input type="range" :min="spec.min" :max="spec.max" :step="spec.step" :value="settings[spec.key]" @input="onValue($event,spec.key)" />
-          </label>
-        </div>
-      </details>
-      <details open>
-        <summary>Fold sculpting ({{ settings.folds.length }})</summary>
-        <div class="group-body">
-          <p class="hint">Each fold deforms a local region. Twist, pinch, lift, curl, and width combine smoothly.</p>
-          <details v-for="(fold,i) in settings.folds" :key="i" :open="i===1||undefined" class="nested">
-            <summary>Fold {{ i+1 }} — U {{ fold.u.toFixed(2) }}</summary>
-            <div class="nested-body">
-              <label v-for="spec in FOLD_CONTROLS" :key="spec.key" class="control">
-                <span class="control-header"><span>{{ spec.label }}</span><output>{{ format(fold[spec.key],spec.step) }}</output></span>
-                <input type="range" :min="spec.min" :max="spec.max" :step="spec.step" :value="fold[spec.key]" @input="onFold($event,i,spec.key)" />
-              </label>
-              <button type="button" @click="removeFold(i)">Remove fold</button>
-            </div>
-          </details>
-          <button type="button" :disabled="settings.folds.length>=MAX_FOLDS" @click="addFold">+ Add fold (max {{ MAX_FOLDS }})</button>
-        </div>
-      </details>
-      <details><summary>Advanced · 3D spine vertices ({{ settings.spinePoints.length }})</summary>
-        <div class="group-body">
-          <p class="hint">Edit the underlying XYZ control points. Small moves make big changes. Save a preset first.</p>
-          <details v-for="(p,i) in settings.spinePoints" :key="i" class="nested">
-            <summary>Control point {{ i+1 }} — {{ p.x.toFixed(2) }}, {{ p.y.toFixed(2) }}, {{ p.z.toFixed(2) }}</summary>
-            <div class="nested-body">
-              <label v-for="spec in SPINE_CONTROLS" :key="spec.key" class="control">
-                <span class="control-header"><span>{{ spec.label }}</span><output>{{ format(p[spec.key],spec.step) }}</output></span>
-                <input type="range" :min="spec.min" :max="spec.max" :step="spec.step" :value="p[spec.key]" @input="onSpine($event,i,spec.key)" />
-              </label>
-            </div>
-          </details>
-        </div>
-      </details>
-      <p v-if="status" class="status" role="status">{{ status }}</p>
-      <p class="hint">Export the chosen view, edit DEFAULT_SCULPTURE in config.ts, commit, and redeploy. Live edits are not public.</p>
+  <aside class="panel" aria-label="Sculpture Lab v3 live tuning">
+    <header><strong>SCULPTURE / GPU LAB V3</strong><button @click="open=!open">{{open?'Hide':'Show'}}</button></header>
+    <div v-if="open" class="body" data-lenis-prevent>
+      <p class="hint">GPU-driven spline, folds, accent and motion. Only contour count and grid quality regenerate geometry.</p>
+      <div class="buttons"><button @click="exportJSON">Copy JSON</button><button @click="importOpen=!importOpen">Import</button><button @click="reset">Reset</button></div>
+      <div v-if="importOpen"><textarea v-model="importText" rows="6" placeholder="Paste exported JSON"></textarea><button @click="importJSON">Apply JSON</button></div>
+      <details><summary>Saved compositions</summary><div class="stack"><div class="buttons"><input v-model="presetName" aria-label="Preset name"/><button @click="savePreset">Save</button></div><div v-for="(p,i) in presets" :key="p.name" class="buttons"><span class="hint">{{p.name}}</span><button @click="loadPreset(i)">Load</button></div></div></details>
+      <details open><summary>Composition / camera</summary><div class="stack">
+        <label v-for="c in frameControls" :key="c.key" class="control"><span>{{c.label}} <output>{{format(settings.framing[c.key])}}</output></span><input type="range" :min="c.min" :max="c.max" :step="c.step" :value="settings.framing[c.key]" @input="num($event,settings.framing,c.key)"/></label>
+        <p class="hint">Framing is fixed while sculpting: fold changes will not auto-rescale the artwork.</p>
+      </div></details>
+      <details open><summary>Ribbons ({{settings.ribbons.length}} / {{MAX_RIBBONS}})</summary><div class="stack">
+        <select v-model.number="active" aria-label="Selected ribbon"><option v-for="(r,i) in settings.ribbons" :key="i" :value="i">{{i+1}} — {{r.name}}</option></select>
+        <div class="buttons"><button :disabled="settings.ribbons.length>=MAX_RIBBONS" @click="addRibbon">+ Duplicate</button><button :disabled="settings.ribbons.length<=1" @click="removeRibbon">Remove</button></div>
+        <template v-if="ribbon">
+          <label class="check"><input type="checkbox" v-model="ribbon.enabled"/> Show ribbon</label>
+          <label v-for="c in shapeControls" :key="c.key" class="control"><span>{{c.label}} <output>{{format(ribbon[c.key])}}</output></span><input type="range" :min="c.min" :max="c.max" :step="c.step" :value="ribbon[c.key]" @input="num($event,ribbon,c.key)"/></label>
+          <details><summary>Ribbon positioning</summary><div v-for="key in (['x','y','z'] as const)" :key="key" class="stack">
+            <label class="control">Offset {{key.toUpperCase()}} <output>{{format(ribbon.offset[key])}}</output><input type="range" min="-2" max="2" step=".01" :value="ribbon.offset[key]" @input="num($event,ribbon.offset,key)"/></label>
+            <label class="control">Rotation {{key.toUpperCase()}} <output>{{format(ribbon.rotation[key])}}</output><input type="range" min="-180" max="180" step=".5" :value="ribbon.rotation[key]" @input="num($event,ribbon.rotation,key)"/></label>
+          </div></details>
+        </template>
+      </div></details>
+      <details open v-if="ribbon"><summary>Fold sculpting ({{ribbon.folds.length}})</summary><div class="stack"><p class="hint">Independent folds; all parameters update as GPU uniforms while dragging.</p>
+        <details v-for="(f,i) in ribbon.folds" :key="i" :open="i===0||undefined"><summary>Fold {{i+1}} · U {{format(f.u)}}</summary><div class="stack nested">
+          <label v-for="c in foldControls" :key="c.key" class="control"><span>{{c.label}} <output>{{format(f[c.key])}}</output></span><input type="range" :min="c.min" :max="c.max" :step="c.step" :value="f[c.key]" @input="num($event,f,c.key)"/></label>
+          <button @click="ribbon.folds.splice(i,1)">Remove fold</button>
+        </div></details><button :disabled="ribbon.folds.length>=MAX_FOLDS" @click="addFold">+ Add fold</button>
+      </div></details>
+      <details open v-if="ribbon"><summary>Accent painting ({{ribbon.accents.length}})</summary><div class="stack"><p class="hint">Each lime patch covers a region along AND across the ribbon. Multiple patches may overlap.</p>
+        <details v-for="(z,i) in ribbon.accents" :key="i" :open="i===0||undefined"><summary>Accent region {{i+1}}</summary><div class="stack nested">
+          <label v-for="c in accentControls" :key="c.key" class="control"><span>{{c.label}} <output>{{format(z[c.key])}}</output></span><input type="range" :min="c.min" :max="c.max" :step="c.step" :value="z[c.key]" @input="num($event,z,c.key)"/></label>
+          <button @click="ribbon.accents.splice(i,1)">Remove region</button>
+        </div></details><button :disabled="ribbon.accents.length>=MAX_ACCENTS" @click="addAccent">+ Add accent</button>
+      </div></details>
+      <details><summary>Rendering / contour breaks</summary><div class="stack"><label v-for="c in lookControls" :key="c.key" class="control"><span>{{c.label}} <output>{{format(settings.look[c.key])}}</output></span><input type="range" :min="c.min" :max="c.max" :step="c.step" :value="settings.look[c.key]" @input="num($event,settings.look,c.key)"/></label></div></details>
+      <details open><summary>Motion / traveling shadows</summary><div class="stack"><select v-model="settings.motion.mode" aria-label="Motion mode"><option value="off">Off</option><option value="rotate">Rotation only</option><option value="shadows">Traveling shadows + line fade</option><option value="both">Rotation + shadows</option></select>
+        <label class="check"><input type="checkbox" v-model="settings.motion.paused"/> Pause all movement</label>
+        <label v-for="c in motionControls" :key="c.key" class="control"><span>{{c.label}} <output>{{format(settings.motion[c.key])}}</output></span><input type="range" :min="c.min" :max="c.max" :step="c.step" :value="settings.motion[c.key]" @input="num($event,settings.motion,c.key)"/></label>
+      </div></details>
+      <details v-if="ribbon"><summary>Advanced / spline points ({{POINTS}})</summary><div class="stack"><button @click="advanced=!advanced">{{advanced?'Hide':'Edit'}} XYZ spline points</button><template v-if="advanced"><details v-for="(p,i) in ribbon.spine" :key="i"><summary>Point {{i+1}}</summary><div class="stack nested"><label v-for="key in (['x','y','z'] as const)" :key="key" class="control"><span>{{key.toUpperCase()}} <output>{{format(p[key])}}</output></span><input type="range" min="-5" max="5" step=".01" :value="p[key]" @input="num($event,p,key)"/></label></div></details></template></div></details>
+      <p class="hint" role="status">{{status || 'Copy JSON to share your favorite composition.'}}</p>
     </div>
   </aside>
 </template>
-
 <style scoped>
-.sculpture-panel{position:fixed;z-index:1000;top:5.5rem;right:1rem;width:min(360px,calc(100vw - 2rem));max-height:min(84svh,850px);display:flex;flex-direction:column;background:rgba(17,17,19,.98);color:#f2f2ef;border:1px solid #484842;box-shadow:0 14px 45px #000a;font:12px/1.45 'JetBrains Mono',monospace;letter-spacing:0}
-.panel-top{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid #363631;gap:8px}
-.panel-top strong{font-size:11px;letter-spacing:.12em}
-.panel-body{overflow:auto;padding:11px 14px 14px;overscroll-behavior:contain}
-.hint{color:#a8a8a3;line-height:1.5;margin:5px 0 12px}
-button{appearance:none;border:1px solid #56564d;color:#f2f2ef;background:#252525;padding:6px 9px;cursor:pointer;font:inherit}
-button:hover{border-color:#d8ff3e}button:disabled{opacity:.45;cursor:not-allowed}
-.toggle{display:flex;align-items:center;gap:9px;margin:6px 0 11px}
-input[type=checkbox],input[type=range]{accent-color:#d8ff3e}
-input[type=range]{display:block;width:100%}
-details{border-top:1px solid #30302f}
-summary{cursor:pointer;padding:10px 0;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
-.group-body{padding:0 0 9px}
-.control{display:block;margin:0 0 13px}
-.control-header{display:flex;justify-content:space-between;gap:10px;margin-bottom:4px}
-output{color:#d8ff3e;font-variant-numeric:tabular-nums}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
-.import-box textarea{margin:10px 0 7px;width:100%;resize:vertical;background:#0a0a0b;color:#eee;border:1px solid #444;font:11px monospace;padding:6px}
-.status{color:#d8ff3e;margin-top:9px}
-.select-label{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 12px}
-select,.preset-entry input{font:inherit;color:#f2f2ef;background:#202021;border:1px solid #56564d;padding:5px;max-width:170px}
-.nested{padding-left:9px;border-left:2px solid #343432}.nested-body{padding:0 2px 8px 7px}
-.preset-entry{display:flex;gap:6px;margin:7px 0;align-items:center}.preset-entry input,.preset-name{flex:1;min-width:0}.preset-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:720px){.sculpture-panel{top:4.5rem;max-height:70svh}}
+.panel{position:fixed;top:5rem;right:1rem;z-index:1000;width:min(368px,calc(100vw - 2rem));max-height:84svh;color:#f2f2ef;background:#111114f5;border:1px solid #46463f;box-shadow:0 12px 40px #000a;font:12px/1.45 'JetBrains Mono',monospace;display:flex;flex-direction:column}.panel header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #333}.panel strong{letter-spacing:.11em;font-size:11px}.body{overflow-y:auto;overscroll-behavior:contain;padding:12px 14px}.hint{font-size:11px;color:#a7a7a0;margin:5px 0 9px}.stack{padding:7px 0 12px;display:grid;gap:8px}details{border-top:1px solid #373731}summary{padding:11px 0;cursor:pointer;letter-spacing:.035em;text-transform:uppercase}.nested{padding-left:12px;border-left:2px solid #3a3a35}.control{display:grid;gap:4px}.control span{display:flex;justify-content:space-between;gap:12px}output{color:#d8ff3e;font-variant-numeric:tabular-nums}.buttons{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.check{display:flex;gap:7px;align-items:center}input[type=range],input[type=checkbox]{accent-color:#d8ff3e}input[type=range]{width:100%}button,select,input:not([type=range]):not([type=checkbox]),textarea{font:inherit;color:#f2f2ef;background:#242426;border:1px solid #555;padding:6px 8px}button{cursor:pointer}button:disabled{opacity:.35;cursor:default}button:hover:not(:disabled){border-color:#d8ff3e}select{width:100%}textarea{width:100%}@media(max-width:720px){.panel{max-height:72svh;top:4.5rem}}
 </style>
