@@ -1,0 +1,29 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { compositionSeed, generateAndApply, shareableSeedUrl } from '../hero/sculpture/state'
+const status = ref('')
+function shuffle() {
+  generateAndApply()
+  status.value = 'New sculpture generated'
+}
+async function share() {
+  const url = shareableSeedUrl()
+  if (!url) { status.value = 'This configuration requires a full JSON export'; return }
+  try { await navigator.clipboard.writeText(url); status.value = 'Shareable link copied' }
+  catch { status.value = `Share link: ${url}` }
+}
+</script>
+<template>
+  <div class="sculpture-actions" aria-label="Generative sculpture controls">
+    <button type="button" @click="shuffle" title="Generate a new artwork">↝ New sculpture</button>
+    <button type="button" @click="share" title="Copy a link to this sculpture">↗ Share</button>
+    <span class="screen-reader" role="status">{{status}} <span v-if="compositionSeed !== null">Seed {{compositionSeed}}</span></span>
+  </div>
+</template>
+<style scoped>
+.sculpture-actions{position:absolute;right:var(--gutter,2rem);top:clamp(5rem,9vh,7rem);z-index:3;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:flex-end}
+button{border:1px solid rgba(242,242,239,.25);background:rgba(10,10,11,.58);backdrop-filter:blur(12px);color:#f2f2ef;padding:.6rem .8rem;font:500 .67rem/1.2 'JetBrains Mono',monospace;letter-spacing:.05em;cursor:pointer;transition:border-color .2s,background .2s}
+button:hover,button:focus-visible{border-color:#d8ff3e;background:rgba(10,10,11,.85)}
+.screen-reader{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+@media(max-width:720px){.sculpture-actions{top:4.6rem;right:1rem;left:1rem;gap:.35rem}button{padding:.53rem .6rem}}
+</style>

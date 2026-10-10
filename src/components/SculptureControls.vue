@@ -2,6 +2,7 @@
 import { computed,ref } from 'vue'
 import { DEFAULT_SCULPTURE, copyConfig, MAX_RIBBONS, MAX_FOLDS, MAX_ACCENTS, POINTS } from '../hero/sculpture/config'
 import { sculptureSettings as settings, setSettings, resetSettings } from '../hero/sculpture/state'
+import SculptureGeneratorControls from './SculptureGeneratorControls.vue'
 const open=ref(true),active=ref(0),advanced=ref(false),importOpen=ref(false),importText=ref(''),status=ref('')
 const ribbon=computed(()=>settings.ribbons[Math.min(active.value,settings.ribbons.length-1)])
 const num=(e:Event,obj:object,key:string)=>{(obj as Record<string,number>)[key]=Number((e.target as HTMLInputElement).value)}
@@ -35,6 +36,7 @@ function loadPreset(i:number){const x=presets.value[i];if(x){setSettings(JSON.pa
   <aside class="panel" aria-label="Sculpture Lab v3 live tuning">
     <header><strong>SCULPTURE / GPU LAB V3</strong><button @click="open=!open">{{open?'Hide':'Show'}}</button></header>
     <div v-if="open" class="body" data-lenis-prevent>
+      <SculptureGeneratorControls />
       <p class="hint">GPU-driven spline, folds, accent and motion. Only contour count and grid quality regenerate geometry.</p>
       <div class="buttons"><button @click="exportJSON">Copy JSON</button><button @click="importOpen=!importOpen">Import</button><button @click="reset">Reset</button></div>
       <div v-if="importOpen"><textarea v-model="importText" rows="6" placeholder="Paste exported JSON"></textarea><button @click="importJSON">Apply JSON</button></div>

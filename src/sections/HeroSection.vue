@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import ShaderHero from '../components/ShaderHero.vue'
 import SculptureControls from '../components/SculptureControls.vue'
+import SculptureShuffle from '../components/SculptureShuffle.vue'
 import { tuneMode } from '../hero/sculpture/state'
 </script>
 
 <template>
   <section class="hero">
     <ShaderHero />
+    <SculptureShuffle v-if="!tuneMode" />
     <div class="hero__content">
       <h1 class="display-xl">
         <span class="rv" data-rv-delay="0.05">Aaron</span>
