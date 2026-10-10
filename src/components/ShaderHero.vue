@@ -77,7 +77,7 @@ onMounted(() => {
   sculpture = createSculpture({
     scene, camera, worldSize, mouse,
     isMobile: window.innerWidth < 720, reducedMotion,
-  }, { ...sculptureSettings })
+  }, { ...sculptureSettings }, () => { if (reducedMotion) requestAnimationFrame(renderStill) })
   window.addEventListener('resize', resize)
   const move = (e: PointerEvent) => {
     const rect = canvas.getBoundingClientRect()
