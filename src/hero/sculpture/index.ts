@@ -24,7 +24,13 @@ export function createSculpture(ctx:VariantContext,first:SculptureConfig=DEFAULT
   occluder.renderOrder=1; lines.renderOrder=2
   group.add(occluder,lines)
   let disposed=false
-  let rebuildTimer:ReturnType<typeof setTimeout>|null=null
+  let liveTimer:ReturnType<typeof setTimeout>|null=null
+  let settleTimer:ReturnType<typeof setTimeout>|null=null
+  let livePending=false
+  let lastLive=-Infinity
+  let rebuildCost=30 // EMA of measured buildGeometry time (ms)
+  let builtFullSig=signature
+  let builtPreviewSig:string|null=null
   let seconds=0
   function uniforms(){
     mats.uniforms.u_lineOpacity.value=config.lineOpacity
@@ -44,15 +50,49 @@ export function createSculpture(ctx:VariantContext,first:SculptureConfig=DEFAULT
     group.scale.setScalar(scale)
     group.position.set((cx-.5)*W-geometry.center.x*scale,(cy-.5)*H-geometry.center.y*scale,0)
   }
-  function rebuild(){
-    rebuildTimer=null
+  function rebuild(preview:boolean){
     if(disposed)return
-    const next=buildGeometry(config,ctx.isMobile)
+    // Skip rebuilds that would produce what is already on the GPU.
+    if(preview&&signature===builtPreviewSig)return
+    if(!preview&&signature===builtFullSig)return
+    const t0=performance.now()
+    const next=buildGeometry(config,ctx.isMobile,preview)
     lines.geometry=next.lineGeometry
     occluder.geometry=next.occluderGeometry
     geometry.dispose(); geometry=next
+    const dur=performance.now()-t0
+    rebuildCost=rebuildCost*0.7+dur*0.3
+    if(preview)builtPreviewSig=signature
+    else{builtFullSig=signature;builtPreviewSig=signature}
     frame()
     onRebuilt?.()
+  }
+  // ~10–15 live previews per second while dragging; adapts down if the
+  // measured rebuild cost would starve the main thread.
+  function liveInterval(){return Math.min(300,Math.max(66,rebuildCost*2))}
+  // Live rebuilds are throttled and coalesced: the timer is never cancelled
+  // by new input, each fire builds the latest config at preview quality, and
+  // a settle timer restores full quality shortly after the last edit. Since
+  // rebuild() reads the live config, the released slider value is always the
+  // one rendered last.
+  function requestRebuild(){
+    if(disposed)return
+    livePending=true
+    if(liveTimer===null){
+      const wait=Math.max(0,liveInterval()-(performance.now()-lastLive))
+      liveTimer=setTimeout(()=>{
+        liveTimer=null
+        lastLive=performance.now()
+        if(disposed||!livePending)return
+        livePending=false
+        rebuild(true)
+      },wait)
+    }
+    if(settleTimer!==null)clearTimeout(settleTimer)
+    settleTimer=setTimeout(()=>{
+      settleTimer=null
+      if(!disposed)rebuild(false)
+    },240)
   }
   frame();uniforms()
   return {
@@ -63,10 +103,7 @@ export function createSculpture(ctx:VariantContext,first:SculptureConfig=DEFAULT
       config={...next}
       signature=nextSignature
       uniforms();frame()
-      if(changed){
-        if(rebuildTimer!==null)clearTimeout(rebuildTimer)
-        rebuildTimer=setTimeout(rebuild,85)
-      }
+      if(changed)requestRebuild()
     },
     update(dt,_elapsed){
       if(disposed)return
@@ -89,7 +126,8 @@ export function createSculpture(ctx:VariantContext,first:SculptureConfig=DEFAULT
     resize(){frame();},
     dispose(){
       disposed=true
-      if(rebuildTimer!==null)clearTimeout(rebuildTimer)
+      if(liveTimer!==null)clearTimeout(liveTimer)
+      if(settleTimer!==null)clearTimeout(settleTimer)
       group.remove(occluder,lines);ctx.scene.remove(group)
       geometry.dispose();mats.lines.dispose();mats.occluder.dispose()
     },

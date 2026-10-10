@@ -27,7 +27,7 @@ export interface SculptureGeometry {
 }
 interface Gap { at:number; radius:number }
 
-export function buildGeometry(config:SculptureConfig,isMobile:boolean):SculptureGeometry {
+export function buildGeometry(config:SculptureConfig,isMobile:boolean,preview=false):SculptureGeometry {
   const open=config.loopOpenness-.55
   const deeper=config.foldDepth-.5
   const openY=[0,0,0,0,0,0,-.05,-.3,-.7,-.3,.24,.35,.3]
@@ -91,7 +91,10 @@ export function buildGeometry(config:SculptureConfig,isMobile:boolean):Sculpture
     return out.normalize()
   }
   const count=isMobile?config.contoursMobile:config.contoursDesktop
-  const N=config.samplesPerContour
+  // Preview mode (live dragging): fewer samples per contour and a coarser
+  // occluder grid. Contour count stays fixed so accent/break indexing is
+  // stable; full quality is restored by the settle rebuild after release.
+  const N=preview?Math.max(70,Math.round(config.samplesPerContour*0.45)):config.samplesPerContour
   const target=empty()
   const hidden=empty()
   // Highest-priority fold selects the accent region. Manual/ridge are alternatives.
@@ -161,15 +164,24 @@ export function buildGeometry(config:SculptureConfig,isMobile:boolean):Sculpture
   for(let j=0;j<count;j++){
     const v=-1+2*j/(count-1)
     const gaps=gapsForLine(j,v)
+    // Compute each sample once, then emit segment endpoint pairs — identical
+    // buffers to evaluating both endpoints independently, at half the cost.
+    const line=empty()
+    for(let i=0;i<N;i++) vertex(line,i/(N-1),v,gaps,j)
     for(let i=0;i<N-1;i++){
-      vertex(target,i/(N-1),v,gaps,j)
-      vertex(target,(i+1)/(N-1),v,gaps,j)
+      for(const k of [i,i+1]){
+        target.position.push(line.position[k*3],line.position[k*3+1],line.position[k*3+2])
+        target.normal.push(line.normal[k*3],line.normal[k*3+1],line.normal[k*3+2])
+        target.alpha.push(line.alpha[k])
+        target.accent.push(line.accent[k])
+        target.u.push(line.u[k])
+      }
     }
   }
   const lineGeometry=asGeometry(target)
   // Depth-only mesh never inherits decorative line breaks. The same vertex
   // displacement shader is used for the contour and occluder passes.
-  const U=isMobile?150:210,V=isMobile?34:48
+  const U=preview?(isMobile?75:105):(isMobile?150:210),V=preview?(isMobile?17:24):(isMobile?34:48)
   const idx:number[]=[]
   for(let i=0;i<=U;i++)for(let j=0;j<=V;j++)vertex(hidden,i/U,-1+2*j/V)
   for(let i=0;i<U;i++)for(let j=0;j<V;j++){
