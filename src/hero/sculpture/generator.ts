@@ -171,7 +171,11 @@ export function generateComposition(options: GenerateOptions): GeneratedComposit
   const seed = options.seed >>> 0
   const rng = random32(seed)
   const requested = options.family ?? 'all'
-  const family: CompositionFamily = requested === 'all' ? pick(rng, FAMILIES) : requested
+  // Always consume the family draw, even when a family is requested explicitly:
+  // a fresh load picks the family from the rng, and a shared seed URL (explicit
+  // family) must replay the exact same rng stream to reproduce the composition.
+  const drawn = pick(rng, FAMILIES)
+  const family: CompositionFamily = requested === 'all' ? drawn : requested
   if (!FAMILIES.includes(family)) throw new Error('Unknown family')
   const config = copyConfig(DEFAULT_SCULPTURE)
   const n = family === 'folded' ? (chance(rng,.68) ? 2 : 1)

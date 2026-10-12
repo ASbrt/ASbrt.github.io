@@ -33,6 +33,12 @@ for(let seed=0;seed<1000;seed++){
 }
 assert.deepEqual([...families].sort(),[...FAMILIES].sort())
 assert.ok(fingerprints.size===1000,`only ${fingerprints.size} unique configs`)
+// Shared seed URLs carry an explicit family; fresh loads draw it from the rng.
+// Both paths must produce the identical composition for the same seed.
+for(const seed of [0,1,42,72,482719,126513267,4294967295]){
+  const fresh=generateComposition({seed})
+  assert.deepEqual(generateComposition({seed,family:fresh.family}),fresh,`explicit-family replay diverges for seed ${seed}`)
+}
 for(const family of FAMILIES){
   const x=generateComposition({seed:72,family})
   assert.equal(x.family,family)
