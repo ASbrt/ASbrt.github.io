@@ -2,7 +2,7 @@
 import { reactive, ref, watch } from 'vue'
 import { DEFAULT_SCULPTURE, copyConfig, sanitizeConfig, type SculptureConfig } from './config'
 import {
-  generateComposition, parseFamily, parseSeed, type CompositionFamily,
+  generateComposition, parseFamily, parseSeed, parseVersion, GENERATOR_VERSION, type CompositionFamily,
   type CompositionLocks, type FamilyChoice,
 } from './generator'
 
@@ -12,6 +12,9 @@ export const STORAGE_KEY = 'asbrt-sculpture-config-v3'
 const query = new URLSearchParams(window.location.search)
 const requestedSeed = parseSeed(query.get('seed'))
 const requestedFamily = parseFamily(query.get('family'))
+// Old share links carry seed+family but no gen marker: replay them with the
+// frozen v4 generator. Fresh visits and new share links use the current one.
+const requestedVersion = requestedSeed !== null ? parseVersion(query.get('gen')) : GENERATOR_VERSION
 
 export function freshSeed(): number {
   if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
@@ -26,7 +29,7 @@ function savedTunerConfig(): SculptureConfig {
   } catch { return copyConfig(DEFAULT_SCULPTURE) }
 }
 const first = requestedSeed !== null || !tuneMode
-  ? generateComposition({seed:requestedSeed ?? freshSeed(),family:requestedFamily}) : null
+  ? generateComposition({seed:requestedSeed ?? freshSeed(),family:requestedFamily,version:requestedVersion}) : null
 export const sculptureSettings = reactive<SculptureConfig>(first?.config ?? savedTunerConfig())
 export const compositionSeed = ref<number|null>(first?.seed ?? null)
 export const compositionFamily = ref<CompositionFamily|null>(first?.family ?? null)
@@ -56,6 +59,7 @@ function removeSeedFromAddress(): void {
   if (!url.searchParams.has('seed') && !url.searchParams.has('family')) return
   url.searchParams.delete('seed')
   url.searchParams.delete('family')
+  url.searchParams.delete('gen')
   window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash)
 }
 export function generateAndApply(options: {
@@ -74,6 +78,7 @@ export function generateAndApply(options: {
     family: options.family ?? 'all',
     base: sanitizeConfig(sculptureSettings),
     locks: options.locks,
+    version: GENERATOR_VERSION,
   })
   setSettings(output.config)
   compositionSeed.value = output.seed
@@ -92,6 +97,7 @@ export function shareableSeedUrl(): string | null {
   url.searchParams.delete('tune')
   url.searchParams.set('seed', String(compositionSeed.value))
   url.searchParams.set('family', compositionFamily.value)
+  url.searchParams.set('gen', String(GENERATOR_VERSION))
   url.hash = ''
   return url.toString()
 }

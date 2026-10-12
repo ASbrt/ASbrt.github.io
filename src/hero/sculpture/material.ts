@@ -16,6 +16,9 @@ export function createMaterials(){
     u_time:{value:0},u_phase:{value:0},u_opacity:{value:1},u_brightness:{value:1},
     u_depthFade:{value:.65},u_accentIntensity:{value:1},
     u_fragmentation:{value:0},u_fragScale:{value:10},u_fragmentSoftness:{value:.01},
+    u_fragSeed:{value:0},
+    u_accentMode:{value:0},u_accentDensity:{value:.3},u_segLen:{value:.14},
+    u_edgeProb:{value:.35},u_edgeLen:{value:.5},u_accentSeed:{value:0},
     u_shadowEnabled:{value:0},u_shadowStrength:{value:.8},u_shadowWidth:{value:.1},
     u_shadowRepeats:{value:2},u_shadowSlant:{value:.12},u_lineFade:{value:0},
   }
@@ -48,6 +51,14 @@ export function updateMaterial(m:MaterialSet,r:Ribbon,c:SculptureConfig){
   u.u_fragmentation.value=c.look.fragmentation
   u.u_fragScale.value=c.look.fragmentScale
   u.u_fragmentSoftness.value=c.look.fragmentationSoftness
+  u.u_fragSeed.value=c.look.fragmentSeed
+  u.u_accentMode.value={patches:0,scattered:1,edges:2,mixed:3}[c.look.accentMode]??0
+  u.u_accentDensity.value=c.look.accentDensity
+  u.u_segLen.value=c.look.accentSegLen
+  u.u_edgeProb.value=c.look.edgeProbability
+  u.u_edgeLen.value=c.look.edgeLength
+  // Accent salt derives from the fragmentation salt so one seed drives both.
+  u.u_accentSeed.value=(c.look.fragmentSeed%1000)*0.773+3.1
   u.u_shadowStrength.value=c.motion.shadowStrength
   u.u_shadowWidth.value=c.motion.shadowWidth
   u.u_shadowRepeats.value=c.motion.shadowRepeats

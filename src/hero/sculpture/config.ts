@@ -10,8 +10,12 @@ export interface Ribbon {
 export interface SculptureConfig {
   ribbons:Ribbon[];
   framing:{zoom:number; x:number; y:number; rx:number; ry:number; rz:number};
-  look:{depthFade:number; accentIntensity:number; fragmentation:number; fragmentationSoftness:number; fragmentScale:number};
-  motion:{paused:boolean; mode:'off'|'rotate'|'shadows'|'both'; speed:number; shadowStrength:number; shadowWidth:number; shadowRepeats:number; shadowSlant:number; lineFade:number; rotationX:number; rotationY:number; phase:number};
+  look:{depthFade:number; accentIntensity:number; fragmentation:number; fragmentationSoftness:number; fragmentScale:number;
+    /** 0 = legacy v4 gap pattern; >0 = per-composition salt (v4.1+). */
+    fragmentSeed:number;
+    accentMode:'patches'|'scattered'|'edges'|'mixed';
+    accentDensity:number; accentSegLen:number; edgeProbability:number; edgeLength:number};
+  motion:{paused:boolean; mode:'off'|'rotate'|'shadows'|'both'; speed:number; shadowStrength:number; shadowWidth:number; shadowRepeats:number; shadowSlant:number; lineFade:number; rotationX:number; rotationY:number; rotationZ:number; phase:number};
   quality:{samples:number; occluderU:number; occluderV:number};
 }
 export const MAX_RIBBONS=3, MAX_FOLDS=4, MAX_ACCENTS=4, POINTS=13
@@ -36,8 +40,9 @@ export const DEFAULT_SCULPTURE:SculptureConfig={
       offset:{x:.16,y:-.13,z:-.08},rotation:{x:0,y:0,z:8}}
   ],
   framing:{zoom:1.95,x:.68,y:.73,rx:13,ry:-20,rz:0},
-  look:{depthFade:.65,accentIntensity:1.0,fragmentation:.25,fragmentationSoftness:.008,fragmentScale:11},
-  motion:{paused:true,mode:'off',speed:.12,shadowStrength:.88,shadowWidth:.10,shadowRepeats:2.0,shadowSlant:.11,lineFade:.12,rotationX:3.5,rotationY:6.5,phase:0},
+  look:{depthFade:.65,accentIntensity:1.0,fragmentation:.25,fragmentationSoftness:.008,fragmentScale:11,
+    fragmentSeed:0,accentMode:'patches',accentDensity:.3,accentSegLen:.14,edgeProbability:.35,edgeLength:.5},
+  motion:{paused:true,mode:'off',speed:.12,shadowStrength:.88,shadowWidth:.10,shadowRepeats:2.0,shadowSlant:.11,lineFade:.12,rotationX:3.5,rotationY:6.5,rotationZ:0,phase:0},
   quality:{samples:160,occluderU:170,occluderV:35}
 }
 const clone=<T>(x:T):T=>JSON.parse(JSON.stringify(x)) as T
@@ -49,8 +54,14 @@ export function sanitizeConfig(raw:unknown):SculptureConfig {
   if(!raw||typeof raw!=='object')return d
   const input=raw as Partial<SculptureConfig>
   if(input.framing){for(const k of Object.keys(d.framing) as (keyof typeof d.framing)[])d.framing[k]=num(input.framing[k],d.framing[k],k==='zoom'?.2:k==='x'||k==='y'?-1:-180,k==='zoom'?5:k==='x'||k==='y'?2:180)}
-  if(input.look){d.look.depthFade=num(input.look.depthFade,d.look.depthFade,0,3);d.look.accentIntensity=num(input.look.accentIntensity,d.look.accentIntensity,0,2);d.look.fragmentation=num(input.look.fragmentation,d.look.fragmentation,0,1);d.look.fragmentationSoftness=num(input.look.fragmentationSoftness,d.look.fragmentationSoftness,.0005,.07);d.look.fragmentScale=num(input.look.fragmentScale,d.look.fragmentScale,1,40)}
-  if(input.motion){const m=input.motion; d.motion.mode=['off','rotate','shadows','both'].includes(m.mode??'')?m.mode!:d.motion.mode;d.motion.paused=typeof m.paused==='boolean'?m.paused:d.motion.paused;for(const k of ['speed','shadowStrength','shadowWidth','shadowRepeats','shadowSlant','lineFade','rotationX','rotationY','phase'] as const)d.motion[k]=num(m[k],d.motion[k],k==='shadowSlant'?-2:0,k==='speed'?2:k==='shadowWidth'?.45:k==='shadowRepeats'?8:k==='shadowSlant'?2:k==='rotationX'||k==='rotationY'?40:k==='phase'?100:1)}
+  if(input.look){d.look.depthFade=num(input.look.depthFade,d.look.depthFade,0,3);d.look.accentIntensity=num(input.look.accentIntensity,d.look.accentIntensity,0,2);d.look.fragmentation=num(input.look.fragmentation,d.look.fragmentation,0,1);d.look.fragmentationSoftness=num(input.look.fragmentationSoftness,d.look.fragmentationSoftness,.0005,.07);d.look.fragmentScale=num(input.look.fragmentScale,d.look.fragmentScale,1,40)
+    d.look.fragmentSeed=Math.round(num(input.look.fragmentSeed,d.look.fragmentSeed,0,4294967295))
+    if(['patches','scattered','edges','mixed'].includes(input.look.accentMode??''))d.look.accentMode=input.look.accentMode!
+    d.look.accentDensity=num(input.look.accentDensity,d.look.accentDensity,0,1)
+    d.look.accentSegLen=num(input.look.accentSegLen,d.look.accentSegLen,.02,.6)
+    d.look.edgeProbability=num(input.look.edgeProbability,d.look.edgeProbability,0,1)
+    d.look.edgeLength=num(input.look.edgeLength,d.look.edgeLength,.05,1)}
+  if(input.motion){const m=input.motion; d.motion.mode=['off','rotate','shadows','both'].includes(m.mode??'')?m.mode!:d.motion.mode;d.motion.paused=typeof m.paused==='boolean'?m.paused:d.motion.paused;for(const k of ['speed','shadowStrength','shadowWidth','shadowRepeats','shadowSlant','lineFade','rotationX','rotationY','rotationZ','phase'] as const)d.motion[k]=num(m[k],d.motion[k],k==='shadowSlant'?-2:0,k==='speed'?2:k==='shadowWidth'?.45:k==='shadowRepeats'?8:k==='shadowSlant'?2:k==='rotationX'||k==='rotationY'||k==='rotationZ'?40:k==='phase'?100:1)}
   if(input.quality){d.quality.samples=Math.round(num(input.quality.samples,d.quality.samples,32,350));d.quality.occluderU=Math.round(num(input.quality.occluderU,d.quality.occluderU,30,350));d.quality.occluderV=Math.round(num(input.quality.occluderV,d.quality.occluderV,12,80))}
   if(Array.isArray(input.ribbons)&&input.ribbons.length>0){
     d.ribbons=input.ribbons.slice(0,MAX_RIBBONS).map((r,i)=>{

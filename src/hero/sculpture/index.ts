@@ -63,8 +63,13 @@ export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAU
       if(!ctx.reducedMotion&&!cfg.motion.paused&&cfg.motion.mode!=='off')time+=Math.max(0,dt)
       const t=cfg.motion.phase+time
       const rotate=cfg.motion.mode==='rotate'||cfg.motion.mode==='both'
-      const drift=rotate&&!ctx.reducedMotion?Math.sin(t*.13):0
-      root.rotation.set(THREE.MathUtils.degToRad(cfg.framing.rx+drift*cfg.motion.rotationX),THREE.MathUtils.degToRad(cfg.framing.ry+drift*cfg.motion.rotationY),THREE.MathUtils.degToRad(cfg.framing.rz))
+      // Organic three-axis drift: same calm pace, slightly different
+      // frequencies and phases per axis so the motion never syncs up.
+      const still=ctx.reducedMotion||!rotate
+      const driftX=still?0:Math.sin(t*.13)
+      const driftY=still?0:Math.sin(t*.097+1.7)
+      const driftZ=still?0:Math.sin(t*.083+3.4)
+      root.rotation.set(THREE.MathUtils.degToRad(cfg.framing.rx+driftX*cfg.motion.rotationX),THREE.MathUtils.degToRad(cfg.framing.ry+driftY*cfg.motion.rotationY),THREE.MathUtils.degToRad(cfg.framing.rz+driftZ*cfg.motion.rotationZ))
       for(const l of layers)l.mats.uniforms.u_time.value=t
     },
     resize:frame,
