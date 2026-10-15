@@ -20,7 +20,7 @@ watch(open, (v) => {
 <template>
   <header class="nav">
     <a class="nav__logo mono" href="#top" aria-label="Back to top" @click="open = false">
-      AS<span class="accent">/</span>Siebert
+      A<span class="accent">/</span>Siebert
     </a>
 
     <nav class="nav__links" aria-label="Sections">

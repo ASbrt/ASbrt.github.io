@@ -1,10 +1,10 @@
 <template>
   <section id="projects" class="section">
     <div class="container">
-      <h2 class="display-lg rv">Selected Work<span class="accent">.</span></h2>
+      <h2 class="display-lg">Selected Work<span class="accent">.</span></h2>
 
       <div class="work">
-        <article class="work__item rv">
+        <article class="work__item">
           <h3 class="work__title">
             Energy, Emissions and Economic Policy: An Agent-Based Approach to
             Simulating Systemic Shifts
@@ -26,7 +26,7 @@
           </div>
         </article>
 
-        <article class="work__item rv" data-rv-delay="0.06">
+        <article class="work__item">
           <h3 class="work__title">
             Mapping Air Pollution and Exposure Inequality in Germany from
             Satellite Imagery
@@ -47,7 +47,7 @@
           </div>
         </article>
 
-        <article class="work__item rv" data-rv-delay="0.12">
+        <article class="work__item">
           <h3 class="work__title">
             Institutional Coordination under Interdependence
           </h3>
@@ -67,7 +67,7 @@
         </article>
       </div>
 
-      <p class="mono work__more rv">
+      <p class="mono work__more">
         <a class="ulink" href="https://github.com/ASbrt" target="_blank" rel="noopener">Other experiments and code on GitHub ↗</a>
       </p>
     </div>

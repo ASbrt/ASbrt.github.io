@@ -41,7 +41,7 @@ onMounted(() => {
 
   document.addEventListener('click', onAnchorClick)
 
-  // generic reveal-on-scroll
+  // hero entrance animation
   gsap.utils.toArray<HTMLElement>('.rv').forEach((el) => {
     gsap.to(el, {
       opacity: 1,

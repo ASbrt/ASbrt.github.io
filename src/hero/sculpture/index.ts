@@ -3,7 +3,7 @@ import type { VariantContext } from '../shared'
 import { DEFAULT_SCULPTURE, sanitizeConfig, topologySignature, type SculptureConfig, type Ribbon } from './config'
 import { makeTopology, type Topology } from './geometry'
 import { createMaterials, updateMaterial, type MaterialSet } from './material'
-export interface SculptureHandle { update(dt:number,elapsed:number):void;resize():void;setConfig(next:SculptureConfig):void;dispose():void }
+export interface SculptureHandle { update(dt:number,elapsed:number):void;resize():void;setView(zoom:number,rx:number,ry:number):void;setConfig(next:SculptureConfig):void;dispose():void }
 interface Layer { group:THREE.Group; topology:Topology; mats:MaterialSet; lines:THREE.LineSegments; occluder:THREE.Mesh }
 /** Geometry stays fixed during folds, control-point edits, accent edits, and motion. */
 export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAULT_SCULPTURE,_onRebuilt?:()=>void):SculptureHandle{
@@ -11,6 +11,7 @@ export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAU
   let cfg=sanitizeConfig(initial),topologyKey=topologySignature(cfg)
   const layers:Layer[]=[]
   let stopped=false,time=0
+  let viewZoom=1,viewX=0,viewY=0
   function createLayer(r:Ribbon):Layer{
     const group=new THREE.Group();root.add(group)
     const topology=makeTopology(cfg,r.contours),mats=createMaterials()
@@ -45,11 +46,14 @@ export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAU
     const W=ctx.worldSize.x,H=ctx.worldSize.y
     // Fixed canonical artboard bounds; sculpting will never auto-reframe itself.
     const base=Math.min(W/3.9,H/2.9)
-    root.scale.setScalar(base*cfg.framing.zoom)
+    root.scale.setScalar(base*cfg.framing.zoom*viewZoom)
     root.position.set((cfg.framing.x-.5)*W,(cfg.framing.y-.5)*H,0)
   }
   sync()
   return {
+    setView(zoom,rx,ry){
+      viewZoom=zoom;viewX=rx;viewY=ry;frame()
+    },
     setConfig(next){
       if(stopped)return
       cfg=sanitizeConfig(next)
@@ -69,7 +73,7 @@ export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAU
       const driftX=still?0:Math.sin(t*.13)
       const driftY=still?0:Math.sin(t*.097+1.7)
       const driftZ=still?0:Math.sin(t*.083+3.4)
-      root.rotation.set(THREE.MathUtils.degToRad(cfg.framing.rx+driftX*cfg.motion.rotationX),THREE.MathUtils.degToRad(cfg.framing.ry+driftY*cfg.motion.rotationY),THREE.MathUtils.degToRad(cfg.framing.rz+driftZ*cfg.motion.rotationZ))
+      root.rotation.set(THREE.MathUtils.degToRad(cfg.framing.rx+viewX+driftX*cfg.motion.rotationX),THREE.MathUtils.degToRad(cfg.framing.ry+viewY+driftY*cfg.motion.rotationY),THREE.MathUtils.degToRad(cfg.framing.rz+driftZ*cfg.motion.rotationZ))
       for(const l of layers)l.mats.uniforms.u_time.value=t
     },
     resize:frame,

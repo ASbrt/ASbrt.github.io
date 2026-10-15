@@ -2,7 +2,7 @@
   <section id="visuell" class="section section--visuell">
     <div class="container">
       <div class="visuell__grid">
-        <figure class="visuell__media rv" data-parallax="0.05">
+        <figure class="visuell__media" data-parallax="0.05">
           <img
             src="../assets/visuell-app.jpg"
             alt="The visuell app: layered video engine, scenes and step sequencer in the browser"
@@ -15,22 +15,21 @@
         </figure>
 
         <div class="visuell__copy">
-          <h2 class="display-lg rv">visuell<span class="accent">.</span></h2>
-          <p class="visuell__sub display-lg rv" data-rv-delay="0.05">
+          <h2 class="display-lg">visuell<span class="accent">.</span></h2>
+          <p class="visuell__sub display-lg">
             A video instrument for live visuals.
           </p>
-          <p class="visuell__body rv" data-rv-delay="0.1">
+          <p class="visuell__body">
             Visuell grew out of making music and wanting VJ tools that work
             more like instruments. It's a browser-based video-sampling
             groovebox for chopping, sequencing and performing with moving
             images.
           </p>
-          <p class="mono visuell__award rv" data-rv-delay="0.15">
+          <p class="mono visuell__award">
             Music Worx Development Award 2024
           </p>
           <a
-            class="btn btn--solid rv"
-            data-rv-delay="0.2"
+            class="btn btn--solid"
             href="https://www.visuell.art/"
             target="_blank"
             rel="noopener"

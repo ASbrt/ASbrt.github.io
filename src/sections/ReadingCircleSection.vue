@@ -2,42 +2,42 @@
   <section id="reading-circle" class="section">
     <div class="container">
       <div class="rc__grid">
-        <h2 class="display-lg rv">
+        <h2 class="display-lg">
           Money, the<br />State &amp; the<br /><span class="accent">Economy</span>
         </h2>
 
         <div class="rc__body">
-          <p class="rv">
+          <p>
             A critical reading circle at my university. We read classic and
             contemporary texts on where money comes from, what states do with
             it and how the monetary system shapes the economy. From commodity
             theories to modern monetary theory and beyond.
           </p>
-          <p class="rv">
+          <p>
             Session materials and readings are hosted here. If your institution
             blocks GitHub Pages assets or you'd like the raw archive, mirrored
             copies live on Cloudflare R2.
           </p>
 
           <div class="rc__sessions">
-            <div class="rc__session rv">
+            <div class="rc__session">
               <span class="mono">Session 01 · TBA</span>
               <span class="rc__session-title">What is money, actually?</span>
               <span class="mono rc__session-status">Materials forthcoming</span>
             </div>
-            <div class="rc__session rv">
+            <div class="rc__session">
               <span class="mono">Session 02 · TBA</span>
               <span class="rc__session-title">The state as issuer</span>
               <span class="mono rc__session-status">Materials forthcoming</span>
             </div>
-            <div class="rc__session rc__session--soon rv">
+            <div class="rc__session rc__session--soon">
               <span class="mono">More sessions</span>
               <span class="rc__session-title">Announced per semester</span>
               <span class="mono rc__session-status">TBA</span>
             </div>
           </div>
 
-          <div class="rc__cta rv">
+          <div class="rc__cta">
             <a
               class="btn"
               href="mailto:aaronsiebert@protonmail.com?subject=Reading%20circle%3A%20Money%2C%20the%20State%20and%20the%20Economy"

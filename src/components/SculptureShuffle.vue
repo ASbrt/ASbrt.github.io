@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { compositionSeed, generateAndApply, shareableSeedUrl } from '../hero/sculpture/state'
+defineProps<{ exploring: boolean; canExplore: boolean }>()
+const emit = defineEmits<{ explore: []; reset: [] }>()
+const exploreButton = ref<HTMLButtonElement | null>(null)
+defineExpose({ focusExplore: () => exploreButton.value?.focus({ preventScroll: true }) })
 const status = ref('')
 let toastTimer: ReturnType<typeof setTimeout> | null = null
 function toast(message: string) {
@@ -10,7 +14,6 @@ function toast(message: string) {
 }
 function shuffle() {
   generateAndApply()
-  toast('New sculpture generated')
 }
 async function share() {
   const url = shareableSeedUrl()
@@ -18,9 +21,12 @@ async function share() {
   try { await navigator.clipboard.writeText(url); toast('Seed link copied to clipboard') }
   catch { toast(`Share link: ${url}`) }
 }
+onBeforeUnmount(() => { if (toastTimer !== null) clearTimeout(toastTimer) })
 </script>
 <template>
   <div class="sculpture-actions" aria-label="Generative sculpture controls">
+    <button v-if="canExplore" ref="exploreButton" type="button" :aria-pressed="exploring" @click="emit('explore')">{{ exploring ? 'Done' : 'Explore sculpture' }}</button>
+    <button v-if="exploring" type="button" @click="emit('reset')">Reset view</button>
     <button type="button" @click="shuffle" title="Generate a new artwork">↝ New sculpture</button>
     <button type="button" @click="share" title="Copy a link to this sculpture">↗ Share</button>
     <span v-if="status" class="toast" role="status">{{status}}</span>

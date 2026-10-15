@@ -3,12 +3,12 @@
     <div class="container">
       <div class="cv__grid">
         <div class="cv__intro">
-          <h2 class="display-lg rv">Curriculum<br /><span class="accent">Vitae</span></h2>
-          <a class="btn rv" href="/cv.pdf" target="_blank" rel="noopener">Download PDF ↗</a>
+          <h2 class="display-lg">Curriculum<br /><span class="accent">Vitae</span></h2>
+          <a class="btn" href="/cv.pdf" target="_blank" rel="noopener">Download PDF ↗</a>
         </div>
 
         <div class="cv__body">
-          <div class="cv__block rv">
+          <div class="cv__block">
             <p class="mono cv__block-label">Experience</p>
             <ul>
               <li>
@@ -73,7 +73,7 @@
             </ul>
           </div>
 
-          <div class="cv__block rv">
+          <div class="cv__block">
             <p class="mono cv__block-label">Education</p>
             <ul>
               <li>
@@ -93,7 +93,7 @@
             </ul>
           </div>
 
-          <div class="cv__block rv">
+          <div class="cv__block">
             <p class="mono cv__block-label">Skills</p>
             <ul class="cv__skills">
               <li><span class="mono">Programming</span><span>Python, R, SQL / PostgreSQL, Rust (learning)</span></li>
@@ -105,7 +105,7 @@
             </ul>
           </div>
 
-          <div class="cv__block rv">
+          <div class="cv__block">
             <p class="mono cv__block-label">Other</p>
             <ul>
               <li>

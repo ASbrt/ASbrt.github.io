@@ -3,11 +3,11 @@
     <div class="container">
       <div class="about__grid">
         <div class="about__left">
-          <h2 class="display-lg rv">About<span class="accent">.</span></h2>
+          <h2 class="display-lg">About<span class="accent">.</span></h2>
         </div>
 
         <div class="about__body">
-          <p class="rv">
+          <p>
             I'm a master's student in Social and Economic Data Science at the
             University of Konstanz, where I also work as a student research
             assistant in the
@@ -16,33 +16,31 @@
               href="https://www.polver.uni-konstanz.de/research-group-international-politics-and-conflict/"
               target="_blank"
               rel="noopener"
-              >International Politics and Conflict Research</a
+              >International Politics and Conflict Research Group</a
             >
-            group of Prof. Dr. Nina von Uexkull. Much of my current work involves
+            of Prof. Dr. Nina von Uexkull. Much of my current work involves
             geospatial data processing and building data pipelines for
             research on natural disasters and conflict. I also tutor
-            introductory computing for social science students. Before moving
+            an introductory course on computing for social science students. Before moving
             to Konstanz, I studied Social Economics with a focus on economics
             at the University of Hamburg, where I tutored empirical methods,
             econometrics and regression analysis.
           </p>
-          <p class="rv">
+          <p>
             I'm particularly interested in macroeconomics, environmental
-            economics and how institutions and policy shape the economy. For
+            economics and how institutions and policy shape an economy. For
             my bachelor's thesis, I developed a stock-flow-consistent
             agent-based macroeconomic model connecting production, finance,
-            energy use and emissions, with the
-            aim of exploring different approaches to economic and environmental
-            policy. These interests also motivate a
+            energy use and emissions. My interests also motivate a
             <a class="ulink" href="#reading-circle">reading circle</a> I'm
-            organizing on money, the state and the economy. Alongside
-            economics, I've become increasingly interested in machine learning
-            and complex systems, particularly the behavior and coordination of
+            organizing on money, the state and the economy. During my master's
+            I've become increasingly interested in machine learning, AI
+            and complex systems, particularly concerning the behavior and coordination of
             interacting AI agents.
           </p>
-          <p class="rv">
+          <p>
             Away from research I build things. My current project is
-            <a class="ulink" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell</a>,
+            <a class="ulink" href="https://www.visuell.art/" target="_blank" rel="noopener">visuell.art</a>,
             a video-sampling groovebox for live visuals and a
             <a
               class="ulink"
@@ -51,8 +49,8 @@
               rel="noopener"
               >2024 Music Worx Development Award</a
             >
-            winner. It grew out of making music and wanting VJ tools that work
-            more like instruments. I also enjoy designing and building websites
+            winner. It grew out of a love for making music and wanting VJ tools that work
+            more like playable instruments. I also enjoy designing and building websites
             and interactive applications, including this one.
           </p>
         </div>
