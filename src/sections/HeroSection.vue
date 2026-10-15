@@ -5,6 +5,7 @@ import SculptureControls from '../components/SculptureControls.vue'
 import SculptureShuffle from '../components/SculptureShuffle.vue'
 import { tuneMode, compositionSeed } from '../hero/sculpture/state'
 const exploring = ref(false)
+const moving = ref(false)
 const canExplore = ref(false)
 const shader = ref<InstanceType<typeof ShaderHero> | null>(null)
 const actions = ref<InstanceType<typeof SculptureShuffle> | null>(null)
@@ -23,14 +24,20 @@ watch(compositionSeed, () => shader.value?.resetView())
 
 <template>
   <section class="hero" :class="{ 'hero--exploring': exploring }" @keydown.esc="stopExploring">
-    <ShaderHero ref="shader" :exploring="exploring" @ready="canExplore = true" />
-    <SculptureShuffle v-if="!tuneMode" ref="actions" :exploring="exploring" :can-explore="canExplore" @explore="toggleExplore" @reset="shader?.resetView()" />
-    <p v-if="exploring" id="explore-help" class="hero__help mono">Drag to rotate · Scroll or pinch to zoom<br />Arrow keys rotate · + / − zoom · Home resets · Esc exits</p>
+    <ShaderHero ref="shader" :exploring="exploring" :moving="moving" @ready="canExplore = true" />
+    <Transition name="dock">
+      <div v-show="exploring" class="hero__dock">
+        <SculptureShuffle :exploring="true" :can-explore="canExplore" :moving="moving" @move="moving = $event" @explore="stopExploring" @reset="shader?.resetView()" />
+      </div>
+    </Transition>
     <div class="hero__content" :inert="exploring" :aria-hidden="exploring">
+      <div class="hero__heading">
       <h1 class="display-xl">
         <span class="rv" data-rv-delay="0.05">Aaron</span>
         <span class="rv hero__line2" data-rv-delay="0.15">Siebert<em class="accent">.</em></span>
       </h1>
+      <SculptureShuffle v-if="!tuneMode" ref="actions" :exploring="false" :can-explore="canExplore" :moving="moving" @explore="toggleExplore" />
+      </div>
       <div class="hero__meta rv" data-rv-delay="0.3">
         <p class="hero__tag">
           My work moves between economics, data science and computational modeling. I also build creative software and design for the web.
@@ -73,9 +80,17 @@ watch(compositionSeed, () => shader.value?.resetView())
   padding-inline: var(--gutter);
   padding-bottom: clamp(3rem,8vh,6rem);
   padding-top: 6rem;
+  transition: transform .4s var(--ease-out), opacity .3s ease;
 }
-.hero--exploring .hero__content { opacity: 0; pointer-events: none; }
-.hero__help { position: absolute; bottom: 2rem; left: var(--gutter); right: var(--gutter); z-index: 3; pointer-events: none; text-align: center; line-height: 1.8; color: var(--ink); }
+.hero--exploring .hero__content { opacity: 0; transform: translateY(2.5rem); pointer-events: none; }
+.hero__heading { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
+.hero__dock { position: absolute; bottom: max(1.25rem, env(safe-area-inset-bottom)); left: var(--gutter); right: var(--gutter); z-index: 3; display: flex; justify-content: center; }
+.dock-enter-active, .dock-leave-active { transition: opacity .25s ease, transform .35s var(--ease-out); }
+.dock-enter-from, .dock-leave-to { opacity: 0; transform: translateY(1rem); }
+.dock-leave-active { pointer-events: none; }
+@media(max-width:720px) {
+  .hero__heading > :last-child { width: 100%; display: flex; justify-content: flex-end; }
+}
 .hero__line2 { display: block; }
 .hero__meta {
   display: flex;
@@ -95,4 +110,7 @@ watch(compositionSeed, () => shader.value?.resetView())
   text-shadow: 0 1px 12px rgba(10,10,11,.6);
 }
 .hero__cta { display: flex; gap: .75rem; flex-wrap: wrap; }
+@media (prefers-reduced-motion: reduce) {
+  .hero__content, .dock-enter-active, .dock-leave-active { transition: none; }
+}
 </style>

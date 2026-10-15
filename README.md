@@ -8,6 +8,8 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 ## Exploring the hero sculpture
 
 Choose **Explore sculpture**, then drag to rotate and scroll or pinch to zoom.
+Enable **Move** to reposition with a drag, or use Shift-drag / Shift + arrow keys.
+Two fingers move and pinch to zoom. Reset also restores the original position.
 Arrow keys rotate; `+` / `−` zoom; Home or **Reset view** restores the view.
 **Done** or Escape returns to browsing. New sculpture also resets the view.
 Share links reproduce the generated artwork, without visitor zoom or rotation.

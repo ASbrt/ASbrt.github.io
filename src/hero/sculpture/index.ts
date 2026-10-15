@@ -3,7 +3,7 @@ import type { VariantContext } from '../shared'
 import { DEFAULT_SCULPTURE, sanitizeConfig, topologySignature, type SculptureConfig, type Ribbon } from './config'
 import { makeTopology, type Topology } from './geometry'
 import { createMaterials, updateMaterial, type MaterialSet } from './material'
-export interface SculptureHandle { update(dt:number,elapsed:number):void;resize():void;setView(zoom:number,rx:number,ry:number):void;setConfig(next:SculptureConfig):void;dispose():void }
+export interface SculptureHandle { update(dt:number,elapsed:number):void;resize():void;setView(zoom:number,rx:number,ry:number,x:number,y:number):void;setConfig(next:SculptureConfig):void;dispose():void }
 interface Layer { group:THREE.Group; topology:Topology; mats:MaterialSet; lines:THREE.LineSegments; occluder:THREE.Mesh }
 /** Geometry stays fixed during folds, control-point edits, accent edits, and motion. */
 export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAULT_SCULPTURE,_onRebuilt?:()=>void):SculptureHandle{
@@ -11,7 +11,7 @@ export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAU
   let cfg=sanitizeConfig(initial),topologyKey=topologySignature(cfg)
   const layers:Layer[]=[]
   let stopped=false,time=0
-  let viewZoom=1,viewX=0,viewY=0
+  let viewZoom=1,viewX=0,viewY=0,panX=0,panY=0
   function createLayer(r:Ribbon):Layer{
     const group=new THREE.Group();root.add(group)
     const topology=makeTopology(cfg,r.contours),mats=createMaterials()
@@ -47,12 +47,12 @@ export function createSculpture(ctx:VariantContext,initial:SculptureConfig=DEFAU
     // Fixed canonical artboard bounds; sculpting will never auto-reframe itself.
     const base=Math.min(W/3.9,H/2.9)
     root.scale.setScalar(base*cfg.framing.zoom*viewZoom)
-    root.position.set((cfg.framing.x-.5)*W,(cfg.framing.y-.5)*H,0)
+    root.position.set((cfg.framing.x-.5+panX)*W,(cfg.framing.y-.5+panY)*H,0)
   }
   sync()
   return {
-    setView(zoom,rx,ry){
-      viewZoom=zoom;viewX=rx;viewY=ry;frame()
+    setView(zoom,rx,ry,x,y){
+      viewZoom=zoom;viewX=rx;viewY=ry;panX=x;panY=y;frame()
     },
     setConfig(next){
       if(stopped)return

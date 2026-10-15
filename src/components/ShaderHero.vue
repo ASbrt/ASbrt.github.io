@@ -5,7 +5,7 @@ import { createBackgroundLayer } from '../hero/shared'
 import { createSculpture, type SculptureHandle } from '../hero/sculpture'
 import { sculptureSettings } from '../hero/sculpture/state'
 
-const props = defineProps<{ exploring: boolean }>()
+const props = defineProps<{ exploring: boolean; moving: boolean }>()
 const emit = defineEmits<{ ready: [] }>()
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 const webglFailed = ref(false)
@@ -30,14 +30,16 @@ let cleanup = () => {}
 let zoom = 1
 let rotationX = 0
 let rotationY = 0
+let positionX = 0
+let positionY = 0
 const pointers = new Map<number, { x: number; y: number }>()
 function applyView() {
-  sculpture?.setView(zoom, rotationX, rotationY)
+  sculpture?.setView(zoom, rotationX, rotationY, positionX, positionY)
   if (reducedMotion) renderStill()
 }
 function resetView() {
   zoom = 1
-  rotationX = rotationY = 0
+  rotationX = rotationY = positionX = positionY = 0
   applyView()
 }
 function zoomBy(factor: number) {
@@ -48,6 +50,15 @@ function rotateBy(x: number, y: number) {
   rotationX = Math.min(85, Math.max(-85, rotationX + x))
   rotationY = (rotationY + y) % 360
   applyView()
+}
+function panBy(x: number, y: number) {
+  positionX = Math.min(0.75, Math.max(-0.75, positionX + x))
+  positionY = Math.min(0.75, Math.max(-0.75, positionY + y))
+  applyView()
+}
+function panPixels(x: number, y: number) {
+  const canvas = canvasEl.value
+  if (canvas) panBy(x / canvas.clientWidth, -y / canvas.clientHeight)
 }
 function pointerDown(e: PointerEvent) {
   if (!props.exploring || e.button !== 0) return
@@ -63,6 +74,9 @@ function pointerMove(e: PointerEvent) {
     const before = Math.hypot(previous.x - other.x, previous.y - other.y)
     const after = Math.hypot(e.clientX - other.x, e.clientY - other.y)
     if (before > 0 && after > 0) zoomBy(after / before)
+    panPixels((e.clientX - previous.x) / 2, (e.clientY - previous.y) / 2)
+  } else if (props.moving || e.shiftKey) {
+    panPixels(e.clientX - previous.x, e.clientY - previous.y)
   } else {
     rotateBy((e.clientY - previous.y) * 0.3, (e.clientX - previous.x) * 0.3)
   }
@@ -81,10 +95,10 @@ function wheel(e: WheelEvent) {
 function keydown(e: KeyboardEvent) {
   if (!props.exploring || e.altKey || e.ctrlKey || e.metaKey) return
   switch (e.key) {
-    case 'ArrowUp': rotateBy(-5, 0); break
-    case 'ArrowDown': rotateBy(5, 0); break
-    case 'ArrowLeft': rotateBy(0, -5); break
-    case 'ArrowRight': rotateBy(0, 5); break
+    case 'ArrowUp': e.shiftKey ? panBy(0, 0.025) : rotateBy(-5, 0); break
+    case 'ArrowDown': e.shiftKey ? panBy(0, -0.025) : rotateBy(5, 0); break
+    case 'ArrowLeft': e.shiftKey ? panBy(-0.025, 0) : rotateBy(0, -5); break
+    case 'ArrowRight': e.shiftKey ? panBy(0.025, 0) : rotateBy(0, 5); break
     case '+': case '=': zoomBy(1.1); break
     case '-': zoomBy(1 / 1.1); break
     case 'Home': resetView(); break
