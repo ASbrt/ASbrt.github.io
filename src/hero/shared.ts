@@ -1,98 +1,10 @@
-// Shared infrastructure for the hero shader variants.
-//
-// Both variants are Three.js scenes (no fullscreen fragment shaders):
-//  - Flow      — CPU-generated streamline polylines, displaced gently on the GPU
-//  - Network   — a live node/edge simulation rendered as points + lines
-//
-// Shared pieces: deterministic JS noise, the GLSL noise lib, a line material
-// used by both variants, and a near-flat background layer with vignette.
+// Background rendering and scene context for the hero sculpture.
 
 import * as THREE from 'three'
 
-/* ——————————————————— palette ——————————————————— */
-
-export const BG_COLOR = new THREE.Color(0.04, 0.04, 0.043)
-export const INK_COLOR = new THREE.Color(0.949, 0.949, 0.937)
-export const ACCENT_COLOR = new THREE.Color(0.847, 1.0, 0.243)
-
-/* ——————————————————— deterministic JS noise ——————————————————— */
-
-export function makeRng(seed: number): () => number {
-  let s = seed >>> 0 || 1
-  return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296)
-}
-
-export function clamp01(x: number): number {
-  return Math.min(1, Math.max(0, x))
-}
-
-export function smoothstep(e0: number, e1: number, x: number): number {
-  const t = clamp01((x - e0) / (e1 - e0))
-  return t * t * (3 - 2 * t)
-}
-
-export class Noise2D {
-  private perm: Uint8Array
-
-  constructor(seed = 1) {
-    const base = new Uint8Array(256)
-    for (let i = 0; i < 256; i++) base[i] = i
-    const rnd = makeRng(seed)
-    for (let i = 255; i > 0; i--) {
-      const j = Math.floor(rnd() * (i + 1))
-      const t = base[i]
-      base[i] = base[j]
-      base[j] = t
-    }
-    this.perm = new Uint8Array(512)
-    for (let i = 0; i < 512; i++) this.perm[i] = base[i & 255]
-  }
-
-  private val(ix: number, iy: number): number {
-    return this.perm[(this.perm[ix & 255] + iy) & 255] / 255
-  }
-
-  noise(x: number, y: number): number {
-    const ix = Math.floor(x)
-    const iy = Math.floor(y)
-    const fx = x - ix
-    const fy = y - iy
-    const ux = fx * fx * fx * (fx * (fx * 6 - 15) + 10)
-    const uy = fy * fy * fy * (fy * (fy * 6 - 15) + 10)
-    const a = this.val(ix, iy)
-    const b = this.val(ix + 1, iy)
-    const c = this.val(ix, iy + 1)
-    const d = this.val(ix + 1, iy + 1)
-    return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy
-  }
-
-  fbm(x: number, y: number, octaves = 4): number {
-    let v = 0
-    let a = 0.55
-    let f = 1
-    let n = 0
-    for (let i = 0; i < octaves; i++) {
-      v += a * this.noise(x * f, y * f)
-      n += a
-      a *= 0.5
-      f *= 2.03
-    }
-    return v / n
-  }
-}
-
-/* ——————————————————— composition ——————————————————— */
-
-// Calm basin behind the hero text (lower-left), in uv space (y up).
-// Every variant keeps this region quiet.
-export function calmBasin(u: number, v: number): number {
-  const d = Math.hypot((u - 0.3) * 1.0, (v - 0.16) * 1.3)
-  return smoothstep(0.9, 0.2, d)
-}
-
 /* ——————————————————— GLSL noise lib ——————————————————— */
 
-export const GLSL_NOISE = /* glsl */ `
+const GLSL_NOISE = /* glsl */ `
   float hash12(vec2 p) {
     vec3 p3 = fract(vec3(p.xyx) * 0.1031);
     p3 += dot(p3, p3.yzx + 33.33);
@@ -122,77 +34,6 @@ export const GLSL_NOISE = /* glsl */ `
     return v;
   }
 `
-
-/* ——————————————————— shared line material ——————————————————— */
-// Thin 1px lines with per-vertex alpha/color, a slow advected-noise
-// displacement (the "flow"), a soft mouse wind, and depth fade.
-
-export const LINE_VERT = GLSL_NOISE + /* glsl */ `
-  uniform float u_time;
-  uniform vec2 u_mouse;
-  uniform vec2 u_worldSize;
-  uniform float u_amp;
-
-  attribute float aAlpha;
-  attribute vec3 aColor;
-
-  varying float vAlpha;
-  varying vec3 vColor;
-
-  void main() {
-    vec3 pos = position;
-
-    // slow advected displacement — lines undulate as if the field breathes
-    float ph = u_time * 0.10;
-    vec2 off = vec2(
-      fbm(pos.xy * 0.9 + vec2(ph, -ph * 0.7)),
-      fbm(pos.xy * 0.9 + vec2(-ph * 0.8, ph) + 5.2)
-    );
-    pos.xy += (off - 0.5) * 2.0 * u_amp;
-
-    // the field leans gently toward the pointer — no flashy reactivity
-    vec2 mw = (u_mouse - 0.5) * u_worldSize;
-    vec2 dm = pos.xy - mw;
-    float d = length(dm);
-    pos.xy += (dm / max(d, 0.001)) * 0.035 * exp(-d * d * 1.2);
-
-    float depthFade = clamp(exp((pos.z - 0.15) * 0.65), 0.35, 1.0);
-    vAlpha = aAlpha * depthFade;
-    vColor = aColor;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-  }
-`
-
-export const LINE_FRAG = /* glsl */ `
-  varying float vAlpha;
-  varying vec3 vColor;
-
-  void main() {
-    gl_FragColor = vec4(vColor, vAlpha);
-  }
-`
-
-export interface LineMaterialOptions {
-  additive?: boolean
-  amp?: number
-}
-
-export function makeLineMaterial(opts: LineMaterialOptions = {}): THREE.ShaderMaterial {
-  return new THREE.ShaderMaterial({
-    vertexShader: LINE_VERT,
-    fragmentShader: LINE_FRAG,
-    uniforms: {
-      u_time: { value: 0 },
-      u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
-      u_worldSize: { value: new THREE.Vector2(1, 1) },
-      u_amp: { value: opts.amp ?? 0.02 },
-    },
-    transparent: true,
-    depthWrite: false,
-    depthTest: false,
-    blending: opts.additive ? THREE.AdditiveBlending : THREE.NormalBlending,
-  })
-}
 
 /* ——————————————————— background layer ——————————————————— */
 // Near-flat dark backdrop: barely-there large-scale tonal drift, vignette,
@@ -273,18 +114,4 @@ export interface VariantContext {
   mouse: THREE.Vector2
   isMobile: boolean
   reducedMotion: boolean
-}
-
-export interface VariantHandle {
-  update?(dt: number, t: number): void
-  resize?(width: number, height: number): void
-  dispose(): void
-}
-
-export type HeroVariantId = 'surface' | 'flow' | 'network'
-
-export interface HeroVariantDef {
-  id: HeroVariantId
-  label: string
-  create(ctx: VariantContext): VariantHandle
 }

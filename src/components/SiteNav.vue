@@ -5,13 +5,12 @@ const links = [
   { href: '#about', label: 'About' },
   { href: '#projects', label: 'Projects' },
   { href: '#visuell', label: 'Visuell' },
-  { href: '#reading-circle', label: 'Reading Circle' },
   { href: '#cv', label: 'CV' },
 ]
 
 const open = ref(false)
 
-// close the mobile menu whenever it becomes desktop-width again
+// Close the mobile menu whenever it becomes desktop-width again.
 watch(open, (v) => {
   document.documentElement.classList.toggle('nav-open', v)
 })
@@ -93,7 +92,7 @@ watch(open, (v) => {
   cursor: pointer;
 }
 
-/* mobile menu overlay */
+/* Mobile menu overlay. */
 .nav__menu {
   position: fixed;
   inset: 0;

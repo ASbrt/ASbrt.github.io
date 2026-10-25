@@ -1,9 +1,19 @@
-/** Run from the repo root after TypeScript compilation; see README of the v4 kit.
+/** Run with npm test; compiles the current generator before checking it.
  * Covers: determinism, versioned seed compatibility, family-draw alignment,
  * visibility scoring, seeded fragmentation, accent modes, rotation behavior,
  * locks, and bounded framing retries. */
 const assert = require('node:assert/strict')
 const {createHash} = require('node:crypto')
+const { execFileSync } = require('node:child_process')
+const { writeFileSync } = require('node:fs')
+const { resolve } = require('node:path')
+
+const root = resolve(__dirname, '..')
+execFileSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'),
+  'src/hero/sculpture/generator.ts', '--outDir', '.test-build',
+  '--module', 'commonjs', '--target', 'es2020', '--skipLibCheck', '--ignoreConfig'],
+  { cwd: root, stdio: 'inherit' })
+writeFileSync(resolve(root, '.test-build/package.json'), '{"type":"commonjs"}\n')
 const {
   generateComposition, parseSeed, parseFamily, parseVersion, FAMILIES,
   scoreCompositionVisibility, MAX_FRAMING_CANDIDATES,

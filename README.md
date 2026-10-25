@@ -1,9 +1,20 @@
-# Vue 3 + TypeScript + Vite
+# Personal portfolio
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Vue 3, TypeScript, and Vite site with an interactive Three.js sculpture.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Development
 
+```sh
+npm ci
+npm run dev
+```
+
+- `npm run build` type-checks and builds the site into `dist/`.
+- `npm run preview` previews the production build.
+- `npm test` compiles the sculpture generator into ignored `.test-build/` output and runs its regression checks.
+
+GitHub Actions deploys `main` to GitHub Pages. Project entries live in
+`src/sections/ProjectsSection.vue`; downloadable documents live in `public/`.
 
 ## Exploring the hero sculpture
 
@@ -20,6 +31,15 @@ For learning the implementation:
 - `src/components/ShaderHero.vue` translates pointer and keyboard input into bounded view offsets.
 - `src/hero/sculpture/index.ts` applies those offsets to the Three.js group without changing the seeded settings or rebuilding geometry.
 
-Build and type-check with `npm run build --ignore-scripts` (skips the repository-data fetch).
 With Vite running and Playwright available, run `node tests/verify-explore.cjs` for browser interaction checks.
 The checks use installed Chrome by default; `PLAYWRIGHT_CHANNEL` can select another Playwright browser channel.
+
+## Reading group
+
+The standalone `/reading-circle/` page is linked from About. Edit its five
+sessions in `src/data/readingCircle.ts`. To enable the participant materials
+button, set `materialsUrl` in `src/pages/ReadingCirclePage.vue` to the restricted
+folder URL. Access is managed by the folder provider.
+
+Vite builds both `dist/index.html` and `dist/reading-circle/index.html`; the
+existing GitHub Pages workflow deploys both pages.

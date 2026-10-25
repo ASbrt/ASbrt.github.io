@@ -8,7 +8,6 @@ import HeroSection from './sections/HeroSection.vue'
 import AboutSection from './sections/AboutSection.vue'
 import ProjectsSection from './sections/ProjectsSection.vue'
 import VisuellSection from './sections/VisuellSection.vue'
-import ReadingCircleSection from './sections/ReadingCircleSection.vue'
 import CvSection from './sections/CvSection.vue'
 import SiteFooter from './components/SiteFooter.vue'
 
@@ -18,7 +17,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 
 let lenis: Lenis | null = null
 
-// smooth-scroll all in-page anchor links instead of jumping
+// Smooth-scroll in-page anchor links instead of jumping.
 const onAnchorClick = (e: MouseEvent) => {
   const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]')
   if (!a || !lenis) return
@@ -31,9 +30,9 @@ const onAnchorClick = (e: MouseEvent) => {
 }
 
 onMounted(() => {
-  if (reducedMotion) return // .rv elements are shown via CSS; native scroll & no parallax
+  if (reducedMotion) return // .rv elements are shown via CSS; native scroll & no parallax.
 
-  // inertia scroll driving ScrollTrigger
+  // Inertia scroll driving ScrollTrigger.
   lenis = new Lenis({ lerp: 0.09 })
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add((time) => lenis!.raf(time * 1000))
@@ -41,7 +40,7 @@ onMounted(() => {
 
   document.addEventListener('click', onAnchorClick)
 
-  // hero entrance animation
+  // Hero entrance animation.
   gsap.utils.toArray<HTMLElement>('.rv').forEach((el) => {
     gsap.to(el, {
       opacity: 1,
@@ -53,7 +52,7 @@ onMounted(() => {
     })
   })
 
-  // parallax drift for tagged media blocks
+  // Parallax drift for tagged media blocks.
   gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((el) => {
     const speed = parseFloat(el.dataset.parallax ?? '0.15')
     gsap.fromTo(
@@ -70,7 +69,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', onAnchorClick)
-})</script>
+})
+</script>
 
 <template>
   <SiteNav />
@@ -79,7 +79,6 @@ onBeforeUnmount(() => {
     <AboutSection />
     <ProjectsSection />
     <VisuellSection />
-    <ReadingCircleSection />
     <CvSection />
   </main>
   <SiteFooter />

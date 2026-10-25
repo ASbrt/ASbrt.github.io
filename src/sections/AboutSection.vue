@@ -31,9 +31,10 @@
             economics and how institutions and policy shape an economy. For
             my bachelor's thesis, I developed a stock-flow-consistent
             agent-based macroeconomic model connecting production, finance,
-            energy use and emissions. My interests also motivate a
-            <a class="ulink" href="#reading-circle">reading circle</a> I'm
-            organizing on money, the state and the economy. During my master's
+            energy use and emissions. Alongside these interests, I organize
+            <a class="ulink" href="/reading-circle/">Money, the State and the Economy</a>,
+            an interdisciplinary reading group exploring monetary systems,
+            economic institutions and public policy. During my master's
             I've become increasingly interested in machine learning, AI
             and complex systems, particularly concerning the behavior and coordination of
             interacting AI agents.
