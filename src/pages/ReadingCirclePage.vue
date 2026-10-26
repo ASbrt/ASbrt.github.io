@@ -41,11 +41,10 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
               <div class="rc__sessions">
                 <details v-for="session in sessions" :key="session.number" class="rc__session">
                   <summary class="rc__summary">
-                    <span class="mono rc__number">Session {{ session.number }}</span>
                     <span class="rc__summary-text">
-                      <span class="mono">{{ session.date }} · 17:30h</span>
                       <span class="rc__session-title">{{ session.title }}</span>
                       <span class="rc__session-subtitle">{{ session.subtitle }}</span>
+                      <span class="rc__schedule">Session {{ Number(session.number) }} · {{ session.date }}, 17:30</span>
                     </span>
                     <span class="rc__expand" aria-hidden="true">+</span>
                   </summary>
@@ -54,13 +53,23 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
                     <div>
                       <h2 class="mono rc__reading-label">Required reading</h2>
                       <ul>
-                        <li v-for="reading in session.required" :key="reading">{{ reading }}</li>
+                        <li v-for="reading in session.required" :key="reading.source">
+                          <p class="rc__source">{{ reading.source }}</p>
+                          <ul class="rc__passages">
+                            <li v-for="passage in reading.passages" :key="passage">{{ passage }}</li>
+                          </ul>
+                        </li>
                       </ul>
                     </div>
                     <div>
                       <h2 class="mono rc__reading-label">Optional reading</h2>
                       <ul>
-                        <li v-for="reading in session.optional" :key="reading">{{ reading }}</li>
+                        <li v-for="reading in session.optional" :key="reading.source">
+                          <p class="rc__source">{{ reading.source }}</p>
+                          <ul class="rc__passages">
+                            <li v-for="passage in reading.passages" :key="passage">{{ passage }}</li>
+                          </ul>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -68,23 +77,16 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
               </div>
 
               <div class="rc__participation">
-                <h2 class="rc__participation-heading">Participation &amp; materials</h2>
+                <h2 class="rc__participation-heading">Structure &amp; Materials</h2>
                 <p>
-                  Each session combines a short introduction, discussion of the
-                  required texts, and an application to a contemporary economic
-                  question. Optional readings are available for further exploration.
+                  Each session combines a short introduction with a broader discussion of the
+                  texts and their implications. The optional readings are available for further exploration.
                 </p>
                 <p>
-                  The reading list is public. Participants receive access to a
-                  restricted materials folder for texts that can be shared. Contact me for more details.
+                  You can receive access to a
+                  restricted materials folder via Google Drive. Contact me if you have any questions.
                 </p>
                 <div class="rc__actions">
-                  <a
-                    class="btn"
-                    href="mailto:aaronsiebert@protonmail.com?subject=Reading%20group%3A%20Money%2C%20the%20State%20and%20the%20Economy"
-                  >
-                    Get in touch to join
-                  </a>
                   <a
                     v-if="materialsUrl"
                     class="btn"
@@ -93,6 +95,12 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
                     rel="noopener noreferrer"
                   >
                     Materials ↗
+                  </a>
+                  <a
+                    class="btn"
+                    href="mailto:aaronsiebert@protonmail.com?subject=Reading%20group%3A%20Money%2C%20the%20State%20and%20the%20Economy"
+                  >
+                    Get in touch
                   </a>
                 </div>
               </div>
@@ -163,7 +171,7 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
 
 .rc__summary {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
   gap: 1rem;
   padding: 1.25rem 0;
@@ -180,10 +188,6 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
   outline-offset: 5px;
 }
 
-.rc__number {
-  white-space: nowrap;
-}
-
 .rc__summary-text {
   display: grid;
   gap: 0.25rem;
@@ -198,6 +202,13 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
 
 .rc__session-subtitle {
   font-size: 0.87rem;
+  color: var(--muted);
+}
+
+.rc__schedule {
+  margin-top: 0.4rem;
+  font-size: 0.87rem;
+  line-height: 1.5;
   color: var(--muted);
 }
 
@@ -226,12 +237,24 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
   margin-bottom: 0.5rem;
 }
 
-.rc__readings ul {
+.rc__readings > div > ul {
   list-style: none;
   display: grid;
   gap: 0.65rem;
-  padding-left: 1rem;
-  border-left: 1px solid var(--line);
+  padding: 0;
+}
+
+.rc__source {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.rc__passages {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+  list-style: disc;
 }
 
 .rc__participation {
@@ -240,7 +263,6 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.75rem;
-  border-top: 1px solid var(--line);
 }
 
 .rc__participation-heading {
@@ -265,25 +287,4 @@ const materialsUrl = 'https://drive.google.com/drive/folders/15KXOs0CDFdKkOAXSNt
   }
 }
 
-@media (max-width: 560px) {
-  .rc__summary {
-    grid-template-columns: 1fr auto;
-    gap: 0.4rem 1rem;
-  }
-
-  .rc__number {
-    grid-column: 1;
-  }
-
-  .rc__summary-text {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .rc__expand {
-    grid-column: 2;
-    grid-row: 1 / 3;
-    align-self: center;
-  }
-}
 </style>
